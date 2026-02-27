@@ -1,0 +1,7 @@
+
+Replace dummy table with real documents.
+Show filename, document_type, 
+upload_time, transaction_count, status.
+Status "done" = green badge.
+Status "processing" = amber spinning badge.
+Status "failed" = red badge.
