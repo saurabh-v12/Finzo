@@ -34,3 +34,20 @@ def read_root():
 
 
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
+
+
+# Additional frontend mount for explicit /app path
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
+
+frontend_path = os.path.join(
+    os.path.dirname(__file__), '..', 'frontend'
+)
+
+if os.path.exists(frontend_path):
+    app.mount(
+        "/app",
+        StaticFiles(directory=frontend_path, html=True),
+        name="frontend_app"
+    )

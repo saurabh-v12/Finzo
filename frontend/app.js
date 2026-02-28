@@ -157,7 +157,7 @@ function setFetchStatus(isFetching) {
 }
 
 // --- API HELPERS ---
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'https://finzo-1.onrender.com';
 
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
@@ -390,7 +390,7 @@ async function initTransactionsPage() {
 
 async function loadTransactionSummary() {
     try {
-        const res = await fetch('http://localhost:8000/api/transactions/summary');
+        const res = await fetch('https://finzo-1.onrender.com/api/transactions/summary');
         const data = await res.json();
         
         const debitEl = document.getElementById('tx-total-debits');
@@ -413,7 +413,7 @@ async function loadTransactions(page = 1) {
     const search = document.getElementById('tx-search-input')?.value || '';
     const category = document.getElementById('tx-category-filter')?.value || '';
     
-    let url = `http://localhost:8000/api/transactions?limit=10&offset=${(page-1)*10}`;
+    let url = `https://finzo-1.onrender.com/api/transactions?limit=10&offset=${(page-1)*10}`;
     if (search) url += `&search=${encodeURIComponent(search)}`;
     if (category && category !== 'all') url += `&category=${encodeURIComponent(category)}`;
     
@@ -610,13 +610,13 @@ function initCharts() {
 async function loadSpendingAnalysis() {
     try {
         // 1. Fetch Data
-        const summaryRes = await fetch('http://localhost:8000/api/dashboard/summary');
+        const summaryRes = await fetch('https://finzo-1.onrender.com/api/dashboard/summary');
         const summary = await summaryRes.json();
         
-        const catRes = await fetch('http://localhost:8000/api/dashboard/categories');
+        const catRes = await fetch('https://finzo-1.onrender.com/api/dashboard/categories');
         const categories = await catRes.json();
         
-        const txRes = await fetch('http://localhost:8000/api/transactions?limit=500');
+        const txRes = await fetch('https://finzo-1.onrender.com/api/transactions?limit=500');
         const txData = await txRes.json();
         const transactions = txData.transactions || txData || [];
 
@@ -974,7 +974,7 @@ async function loadDocuments() {
 async function deleteDocument(docId) {
     if (confirm("Delete this document and all its transactions? This cannot be undone.")) {
         try {
-            const response = await fetch(`http://localhost:8000/api/upload/documents/${docId}`, {
+            const response = await fetch(`https://finzo-1.onrender.com/api/upload/documents/${docId}`, {
                 method: 'DELETE'
             });
             
@@ -1076,7 +1076,7 @@ async function handleFileUpload(file) {
             }
         }, 1000);
 
-        const response = await fetch('http://localhost:8000/api/upload/document', {
+        const response = await fetch('https://finzo-1.onrender.com/api/upload/document', {
             method: 'POST',
             body: formData
         });
@@ -1133,7 +1133,7 @@ async function pollDocumentStatus(documentId, progressBar, successBanner, progre
         }
         
         try {
-            const res = await fetch(`http://localhost:8000/api/upload/documents/${documentId}`);
+            const res = await fetch(`https://finzo-1.onrender.com/api/upload/documents/${documentId}`);
             const doc = await res.json();
             
             console.log('Polling status:', doc.status);
@@ -1202,7 +1202,7 @@ let recurringItems = [];
 async function loadRecurring() {
     try {
         // 1. Fetch Transactions (using limit 500)
-        const txRes = await fetch('http://localhost:8000/api/transactions?limit=500');
+        const txRes = await fetch('https://finzo-1.onrender.com/api/transactions?limit=500');
         const txData = await txRes.json();
         const transactions = txData.transactions || txData || [];
         
@@ -1626,7 +1626,7 @@ const defaultBudgets = {
 async function loadBudget() {
     try {
         // 1. Fetch Categories
-        const catRes = await fetch('http://localhost:8000/api/dashboard/categories');
+        const catRes = await fetch('https://finzo-1.onrender.com/api/dashboard/categories');
         const categories = await catRes.json();
         
         // 2. Get User Budgets from LocalStorage
