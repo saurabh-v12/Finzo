@@ -36,22 +36,19 @@ Financial data:
 {json.dumps(stats, indent=2)}"""
 
     def get_transaction_stats(self, db: Session):
-        # Total Spent (Debits)
+
         total_spent = db.query(func.sum(Transaction.amount)).filter(
             Transaction.transaction_type == 'debit'
         ).scalar() or 0
         
-        # Total Income (Credits)
         total_income = db.query(func.sum(Transaction.amount)).filter(
             Transaction.transaction_type == 'credit'
         ).scalar() or 0
         
-        # Savings Rate
         savings_rate = 0
         if total_income > 0:
             savings_rate = ((total_income - total_spent) / total_income) * 100
             
-        # Category Breakdown
         categories = db.query(
             Transaction.category,
             func.sum(Transaction.amount).label('total')
@@ -63,7 +60,6 @@ Financial data:
         
         category_breakdown = {cat: float(amt) for cat, amt in categories}
         
-        # Top Merchant
         top_merchant_res = db.query(
             Transaction.merchant,
             func.sum(Transaction.amount).label('total')
@@ -77,10 +73,8 @@ Financial data:
         
         top_merchant = top_merchant_res[0] if top_merchant_res else "None"
         
-        # Transaction Count
         transaction_count = db.query(Transaction).count()
         
-        # Recurring Total
         recurring_total = db.query(func.sum(Transaction.amount)).filter(
             Transaction.transaction_type == 'debit',
             Transaction.is_recurring == True
@@ -115,7 +109,6 @@ Financial data:
             
             insights_data = json.loads(result_text)
             
-            # Save to DB
             generated_insights = []
             current_period = datetime.now().strftime("%b %Y")
             
@@ -128,7 +121,7 @@ Financial data:
                     period=current_period
                 )
                 db.add(insight)
-                # Store dict representation for return
+
                 generated_insights.append({
                     "insight_type": insight.insight_type,
                     "headline": insight.headline,
@@ -144,3 +137,4 @@ Financial data:
             import traceback
             traceback.print_exc()
             return []
+            
