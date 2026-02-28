@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+python-multipart
+pymupdf
+pytesseract
+pillow
+google-generativeai
+sqlalchemy
+pandas
+python-dotenv
+python-jose[cryptography]
+passlib[bcrypt]
+aiofiles
