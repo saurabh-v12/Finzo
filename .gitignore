@@ -1,4 +1,4 @@
-# Python
+
 __pycache__/
 *.py[cod]
 *$py.class
@@ -21,27 +21,27 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environment
+
 venv/
 .env
 .venv/
 env/
 ENV/
 
-# Database
+
 *.db
 *.sqlite
 
-# Finzo Specific
+
 backend/uploads/
 backend/uploads/statements/
 
-# IDE
+
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS
+
 .DS_Store
 Thumbs.db
