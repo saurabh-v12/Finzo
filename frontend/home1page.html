@@ -8,676 +8,157 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-/* ═══════════════════════════════════════
-   TOKENS
-═══════════════════════════════════════ */
 :root{
-  --bg:          #04080f;
-  --bg2:         #070d18;
-  --surface:     #0b1424;
-  --border:      rgba(255,255,255,0.07);
-  --text:        #e2eaf5;
-  --muted:       #4e7499;
-  --accent:      #38bdf8;
-  --accent2:     #0ea5e9;
-  --glow:        rgba(56,189,248,0.18);
-  --gold:        #f0c040;
+  --bg:#04080f;
+  --bg2:#070d18;
+  --surface:#0b1424;
+  --border:rgba(255,255,255,0.07);
+  --text:#e2eaf5;
+  --muted:#4e7499;
+  --accent:#38bdf8;
+  --accent2:#0ea5e9;
+  --glow:rgba(56,189,248,0.18);
+  --gold:#f0c040;
   --font-display:"Syne", sans-serif;
-  --font-body:   "DM Sans", sans-serif;
-  --radius:      18px;
-  --transition:  0.35s cubic-bezier(.4,0,.2,1);
+  --font-body:"DM Sans", sans-serif;
+  --radius:18px;
+  --transition:0.35s cubic-bezier(.4,0,.2,1);
 }
 
-*{ margin:0; padding:0; box-sizing:border-box; }
-html{ scroll-behavior:smooth; }
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
 
 body{
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-body);
-  overflow-x: hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  overflow-x:hidden;
 }
 
-/* custom scrollbar */
-::-webkit-scrollbar{ width:6px; }
-::-webkit-scrollbar-track{ background:var(--bg); }
-::-webkit-scrollbar-thumb{ background:rgba(56,189,248,0.25); border-radius:99px; }
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,0.25);border-radius:99px;}
 
-/* ═══════════════════════════════════════
-   NAVBAR
-═══════════════════════════════════════ */
 nav{
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 48px;
-  background: rgba(4,8,15,0.65);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  transition: padding var(--transition);
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:100;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 48px;
+  background:rgba(4,8,15,0.65);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:padding var(--transition);
 }
-nav.scrolled{ padding: 12px 48px; }
+nav.scrolled{padding:12px 48px;}
 
 .nav-logo{
-  font-family: var(--font-display);
-  font-size: 26px;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: -0.5px;
+  font-family:var(--font-display);
+  font-size:26px;
+  font-weight:800;
+  color:#fff;
+  letter-spacing:-0.5px;
 }
-.nav-logo span{ color: var(--accent); }
+.nav-logo span{color:var(--accent);}
 
-.nav-links{ display:flex; gap:32px; list-style:none; }
+.nav-links{display:flex;gap:32px;list-style:none;}
 .nav-links a{
-  text-decoration: none;
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  transition: color var(--transition);
+  text-decoration:none;
+  color:var(--muted);
+  font-size:14px;
+  font-weight:500;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  transition:color var(--transition);
 }
-.nav-links a:hover{ color: var(--accent); }
+.nav-links a:hover{color:var(--accent);}
 
-.nav-cta{
-  padding: 10px 24px;
-  border-radius: 99px;
-  background: linear-gradient(135deg, var(--accent2), var(--accent));
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  font-family: var(--font-body);
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 20px rgba(14,165,233,0.3);
-  transition: transform var(--transition), box-shadow var(--transition);
-  text-decoration: none;
-}
-.nav-cta:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(14,165,233,0.45);
-}
-
-/* ═══════════════════════════════════════
-   HERO — VIDEO
-═══════════════════════════════════════ */
 .hero{
-  position: relative;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  position:relative;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
 }
 
 .hero video{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-  filter: brightness(0.35) saturate(0.7);
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:0;
+  filter:brightness(0.35) saturate(0.7);
 }
 
-/* layered gradient overlay */
 .hero-overlay{
-  position: absolute;
-  inset: 0;
-  z-index: 1;
+  position:absolute;
+  inset:0;
+  z-index:1;
   background:
     radial-gradient(ellipse 80% 60% at 50% 100%, rgba(14,165,233,0.12) 0%, transparent 70%),
     linear-gradient(to bottom, rgba(4,8,15,0.2) 0%, rgba(4,8,15,0.75) 100%);
 }
 
 .hero-content{
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 0 24px;
-  max-width: 800px;
+  position:relative;
+  z-index:2;
+  text-align:center;
+  padding:0 24px;
+  max-width:800px;
 }
 
-.hero-eyebrow{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border-radius: 99px;
-  background: rgba(56,189,248,0.1);
-  border: 1px solid rgba(56,189,248,0.25);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 28px;
-  animation: fadeUp 0.8s ease both;
-}
-.hero-eyebrow::before{
-  content:'';
-  width:6px; height:6px;
-  border-radius:50%;
-  background:var(--accent);
-  box-shadow: 0 0 8px var(--accent);
+.hero-title em{
+  font-style:normal;
+  color:#fff;
+  text-shadow:0 0 10px #00f5ff,0 0 20px #6a5cff,0 0 30px #7dd3fc;
+  animation:glowPulse 2s infinite alternate;
 }
 
-.hero-title{
-  font-family: var(--font-display);
-  font-size: clamp(40px, 6vw, 76px);
-  font-weight: 800;
-  line-height: 1.06;
-  letter-spacing: -2px;
-  color: #fff;
-  margin-bottom: 24px;
-  animation: fadeUp 0.8s 0.15s ease both;
-}
-/* .hero-title em{
-  font-style: normal;
-  background: linear-gradient(90deg, var(--accent2), var(--accent), #7dd3fc);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-} */
- .hero-title em {
-  font-style: normal;
-  color: #fff;
-  text-shadow: 0 0 10px #00f5ff, 0 0 20px #6a5cff, 0 0 30px #7dd3fc;
-  animation: glowPulse 2s infinite alternate;
+@keyframes glowPulse{
+  0%{text-shadow:0 0 10px #00f5ff,0 0 20px #6a5cff,0 0 30px #7dd3fc;}
+  50%{text-shadow:0 0 20px #00f5ff,0 0 30px #6a5cff,0 0 40px #7dd3fc;}
+  100%{text-shadow:0 0 10px #00f5ff,0 0 20px #6a5cff,0 0 30px #7dd3fc;}
 }
 
-@keyframes glowPulse {
-  0% { text-shadow: 0 0 10px #00f5ff, 0 0 20px #6a5cff, 0 0 30px #7dd3fc; }
-  50% { text-shadow: 0 0 20px #00f5ff, 0 0 30px #6a5cff, 0 0 40px #7dd3fc; }
-  100% { text-shadow: 0 0 10px #00f5ff, 0 0 20px #6a5cff, 0 0 30px #7dd3fc; }
-}
-.hero-sub{
-  font-size: 18px;
-  line-height: 1.7;
-  color: #94a3b8;
-  max-width: 520px;
-  margin: 0 auto 40px;
-  font-weight: 400;
-  animation: fadeUp 0.8s 0.3s ease both;
-}
-
-.hero-actions{
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-  animation: fadeUp 0.8s 0.45s ease both;
-}
-
-.btn-primary{
-  padding: 16px 36px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, var(--accent2), var(--accent));
-  color: #fff;
-  font-weight: 700;
-  font-size: 15px;
-  font-family: var(--font-body);
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 6px 28px rgba(14,165,233,0.4);
-  transition: transform var(--transition), box-shadow var(--transition);
-  text-decoration: none;
-  display: inline-block;
-}
-.btn-primary:hover{
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(14,165,233,0.55);
-}
-
-.btn-outline{
-  padding: 16px 36px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.05);
-  color: #e2eaf5;
-  font-weight: 600;
-  font-size: 15px;
-  font-family: var(--font-body);
-  border: 1px solid rgba(255,255,255,0.12);
-  cursor: pointer;
-  transition: background var(--transition), border-color var(--transition);
-  text-decoration: none;
-  display: inline-block;
-}
-.btn-outline:hover{
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(56,189,248,0.4);
-  color: var(--accent);
-}
-
-/* scroll indicator */
-.scroll-hint{
-  position: absolute;
-  bottom: 36px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  animation: fadeUp 1s 1s ease both;
-}
-.scroll-hint .mouse{
-  width: 22px; height: 36px;
-  border: 2px solid rgba(255,255,255,0.2);
-  border-radius: 99px;
-  display: flex;
-  justify-content: center;
-  padding-top: 6px;
-}
-.scroll-hint .mouse::after{
-  content:'';
-  width: 3px; height: 6px;
-  background: var(--accent);
-  border-radius: 99px;
-  animation: scrollWheel 1.6s ease infinite;
-}
-
-/* ═══════════════════════════════════════
-   STATS TICKER
-═══════════════════════════════════════ */
 .stats-bar{
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 20px 0;
-  overflow: hidden;
-}
-.stats-inner{
-  display: flex;
-  justify-content: center;
-  gap: 0;
-  flex-wrap: wrap;
-}
-.stat-item{
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 48px;
-  border-right: 1px solid var(--border);
-}
-.stat-item:last-child{ border-right:none; }
-.stat-value{
-  font-family: var(--font-display);
-  font-size: 28px;
-  font-weight: 800;
-  color: #fff;
-}
-.stat-label{
-  font-size: 12px;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  font-weight: 500;
-}
-
-/* ═══════════════════════════════════════
-   SERVICES SECTION
-═══════════════════════════════════════ */
-.services{
-  padding: 120px 48px 100px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.section-tag{
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 16px;
-}
-.section-head{
-  font-family: var(--font-display);
-  font-size: clamp(28px, 3.5vw, 46px);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -1px;
-  color: #fff;
-  margin-bottom: 18px;
-}
-.section-lead{
-  font-size: 17px;
-  color: #64748b;
-  max-width: 480px;
-  line-height: 1.7;
-}
-
-.services-header{ margin-bottom: 64px; }
-
-/* Cards grid */
-.cards-grid{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:20px 0;
 }
 
 .card{
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 36px 32px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
-  opacity: 0;
-  transform: translateY(48px);
-}
-
-.card.visible{
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* stagger via inline style set in JS */
-.card::before{
-  content:'';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(56,189,248,0.07) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity var(--transition);
-}
-.card:hover{ 
-  transform: translateY(-6px);
-  border-color: rgba(56,189,248,0.35);
-  box-shadow: 0 20px 60px rgba(14,165,233,0.15);
-}
-.card:hover::before{ opacity:1; }
-
-.card-icon{
-  width: 52px; height: 52px;
-  border-radius: 14px;
-  background: rgba(56,189,248,0.1);
-  border: 1px solid rgba(56,189,248,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  margin-bottom: 24px;
-  transition: background var(--transition), transform var(--transition);
-}
-.card:hover .card-icon{
-  background: rgba(56,189,248,0.2);
-  transform: scale(1.1);
-}
-
-.card-title{
-  font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 10px;
-  letter-spacing: -0.3px;
-}
-
-.card-desc{
-  font-size: 14px;
-  color: #4e7499;
-  line-height: 1.7;
-}
-
-.card-arrow{
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--accent);
-  opacity: 0;
-  transform: translateX(-8px);
-  transition: opacity var(--transition), transform var(--transition);
-}
-.card:hover .card-arrow{
-  opacity:1;
-  transform: translateX(0);
-}
-
-/* ═══════════════════════════════════════
-   FEATURES / HOW IT WORKS
-═══════════════════════════════════════ */
-.features{
-  padding: 80px 48px 120px;
-  background: var(--bg2);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.features-inner{
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
-
-.features-visual{
-  position: relative;
-  height: 420px;
-}
-.feat-card{
-  position: absolute;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 22px 26px;
-}
-.feat-card:nth-child(1){ top:0; left:0; width:260px; }
-.feat-card:nth-child(2){ top:80px; right:0; width:240px; }
-.feat-card:nth-child(3){ bottom:40px; left:30px; width:200px; }
-
-.feat-card-label{ font-size:12px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px; }
-.feat-card-val{ font-family:var(--font-display); font-size:28px; font-weight:800; color:#fff; }
-.feat-card-sub{ font-size:12px; color:#22c55e; font-weight:600; margin-top:2px; }
-
-.feat-bar{ margin-top:10px; height:4px; background:rgba(255,255,255,0.06); border-radius:99px; overflow:hidden; }
-.feat-bar-fill{ height:100%; border-radius:99px; background:linear-gradient(90deg,var(--accent2),var(--accent)); animation:barGrow 2s 0.5s ease both; }
-
-.steps{ display:flex; flex-direction:column; gap:32px; }
-.step{ display:flex; gap:20px; align-items:flex-start; }
-.step-num{
-  flex-shrink:0;
-  width:40px; height:40px;
-  border-radius:12px;
-  background:rgba(56,189,248,0.1);
-  border:1px solid rgba(56,189,248,0.2);
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--font-display);
-  font-size:16px; font-weight:800; color:var(--accent);
-}
-.step-title{ font-family:var(--font-display); font-weight:700; font-size:17px; color:#fff; margin-bottom:6px; }
-.step-desc{ font-size:14px; color:var(--muted); line-height:1.65; }
-
-/* ═══════════════════════════════════════
-   TESTIMONIALS
-═══════════════════════════════════════ */
-.testimonials{
-  padding: 100px 48px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.testi-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:60px; }
-.testi-card{
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:var(--radius);
-  padding:32px;
+  padding:36px 32px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:transform var(--transition),border-color var(--transition),box-shadow var(--transition);
   opacity:0;
-  transform:translateY(40px);
-  transition: opacity .6s ease, transform .6s ease, border-color var(--transition);
+  transform:translateY(48px);
 }
-.testi-card.visible{ opacity:1; transform:translateY(0); }
-.testi-card:hover{ border-color:rgba(56,189,248,0.25); }
-.testi-stars{ color:var(--gold); font-size:14px; margin-bottom:16px; letter-spacing:2px; }
-.testi-text{ font-size:15px; line-height:1.7; color:#94a3b8; margin-bottom:20px; }
-.testi-author{ display:flex; align-items:center; gap:12px; }
-.testi-avatar{
-  width:40px; height:40px;
-  border-radius:50%;
-  background:linear-gradient(135deg,var(--accent2),#7c3aed);
-  display:flex; align-items:center; justify-content:center;
-  font-weight:700; font-size:16px; color:#fff;
-}
-.testi-name{ font-weight:600; font-size:14px; color:#e2eaf5; }
-.testi-role{ font-size:12px; color:var(--muted); }
 
-/* ═══════════════════════════════════════
-   CTA BANNER
-═══════════════════════════════════════ */
-.cta-banner{
-  margin: 0 48px 100px;
-  border-radius: 28px;
-  background: linear-gradient(135deg, #0c1e35 0%, #0a1628 50%, #0e253d 100%);
-  border: 1px solid rgba(56,189,248,0.2);
-  padding: 80px 60px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 40px 100px rgba(14,165,233,0.12);
+.card.visible{
+  opacity:1;
+  transform:translateY(0);
 }
-.cta-banner::before{
-  content:'';
-  position:absolute;
-  width:500px; height:500px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(56,189,248,0.12),transparent 60%);
-  top:-200px; left:-100px;
-  pointer-events:none;
-}
-.cta-banner::after{
-  content:'';
-  position:absolute;
-  width:400px; height:400px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(124,58,237,0.08),transparent 60%);
-  bottom:-150px; right:-80px;
-  pointer-events:none;
-}
-.cta-banner h2{
-  font-family:var(--font-display);
-  font-size:clamp(28px,3.5vw,46px);
-  font-weight:800; color:#fff;
-  letter-spacing:-1px;
-  margin-bottom:16px;
-  position:relative; z-index:1;
-}
-.cta-banner p{ font-size:17px; color:#64748b; margin-bottom:40px; position:relative; z-index:1; }
-.cta-banner .cta-actions{ display:flex; gap:16px; justify-content:center; position:relative; z-index:1; flex-wrap:wrap; }
 
-/* ═══════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════ */
 footer{
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: 64px 48px 36px;
-}
-.footer-inner{
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.footer-top{
-  display: grid;
-  grid-template-columns: 1.8fr 1fr 1fr 1fr;
-  gap: 48px;
-  padding-bottom: 48px;
-  border-bottom: 1px solid var(--border);
-}
-.footer-brand p{ font-size:14px; color:var(--muted); line-height:1.7; margin-top:14px; max-width:280px; }
-.footer-col h4{ font-family:var(--font-display); font-weight:700; font-size:14px; color:#fff; margin-bottom:18px; text-transform:uppercase; letter-spacing:.06em; }
-.footer-col ul{ list-style:none; display:flex; flex-direction:column; gap:10px; }
-.footer-col ul a{ font-size:14px; color:var(--muted); text-decoration:none; transition:color var(--transition); }
-.footer-col ul a:hover{ color:var(--accent); }
-
-.footer-bottom{
-  padding-top:32px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:16px;
-  font-size:13px;
-  color:var(--muted);
-}
-.footer-socials{ display:flex; gap:12px; }
-.social-btn{
-  width:34px; height:34px;
-  border-radius:8px;
-  background:rgba(255,255,255,0.05);
-  border:1px solid var(--border);
-  display:flex; align-items:center; justify-content:center;
-  font-size:14px; cursor:pointer;
-  transition:background var(--transition), border-color var(--transition);
-  text-decoration:none;
-}
-.social-btn:hover{ background:rgba(56,189,248,0.1); border-color:rgba(56,189,248,0.3); }
-
-/* ═══════════════════════════════════════
-   KEYFRAMES
-═══════════════════════════════════════ */
-@keyframes fadeUp{
-  from{ opacity:0; transform:translateY(30px); }
-  to{ opacity:1; transform:translateY(0); }
-}
-@keyframes scrollWheel{
-  0%{ transform:translateY(0); opacity:1; }
-  60%{ transform:translateY(10px); opacity:0; }
-  61%{ transform:translateY(0); opacity:0; }
-  100%{ opacity:1; }
-}
-@keyframes barGrow{
-  from{ width:0; }
-  to{ width:var(--w,75%); }
-}
-@keyframes cardReveal{
-  from{ opacity:0; transform:translateY(40px); }
-  to{ opacity:1; transform:translateY(0); }
-}
-
-/* ═══════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════ */
-@media(max-width:1024px){
-  .cards-grid{ grid-template-columns:repeat(2,1fr); }
-  .testi-grid{ grid-template-columns:repeat(2,1fr); }
-  .features-inner{ grid-template-columns:1fr; }
-  .features-visual{ display:none; }
-  .footer-top{ grid-template-columns:1fr 1fr; }
-}
-@media(max-width:768px){
-  nav{ padding:16px 24px; }
-  .nav-links{ display:none; }
-  .services, .testimonials{ padding:80px 24px; }
-  .features{ padding:60px 24px; }
-  .cards-grid{ grid-template-columns:1fr; }
-  .testi-grid{ grid-template-columns:1fr; }
-  .cta-banner{ margin:0 24px 80px; padding:56px 32px; }
-  footer{ padding:48px 24px 32px; }
-  .footer-top{ grid-template-columns:1fr; gap:36px; }
-  .footer-bottom{ flex-direction:column; text-align:center; }
-  .stats-inner{ flex-direction:column; gap:0; }
-  .stat-item{ border-right:none; border-bottom:1px solid var(--border); padding:16px 48px; justify-content:space-between; width:100%; }
-  .stat-item:last-child{ border-bottom:none; }
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  padding:64px 48px 36px;
 }
 </style>
 </head>
+
 <body>
 
-<!-- ═══ NAVBAR ═══ -->
 <nav id="navbar">
   <div class="nav-logo">Finzo<span>.</span></div>
   <ul class="nav-links">
@@ -686,347 +167,67 @@ footer{
     <li><a href="#testimonials">Reviews</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-
 </nav>
 
-<!-- ═══ HERO ═══ -->
 <section class="hero">
-  <video autoplay muted loop playsinline poster="">
+  <video autoplay muted loop playsinline>
     <source src="WhatsApp Video 2026-02-27 at 7.55.37 PM.mp4" type="video/mp4">
   </video>
+
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <div class="hero-eyebrow">India's Most Trusted Fintech Platform</div>
     <h1 class="hero-title">
       One Solution to All Your<br><em>Financial Problems</em>
     </h1>
-    <p class="hero-sub">
-      Manage taxes, loans, statements and more — all from one intelligent dashboard built for modern India.
-    </p>
-    <div class="hero-actions">
-      <a href="login.html" class="btn-primary">Explore Services</a>
-      <a href="#how-it-works" class="btn-outline">How It Works</a>
-    </div>
-  </div>
 
-  <div class="scroll-hint">
-    <div class="mouse"></div>
-    Scroll
+    <a href="login.html">Explore Services</a>
   </div>
 </section>
-
-<!-- ═══ STATS BAR ═══ -->
-<div class="stats-bar">
-  <div class="stats-inner">
-    <div class="stat-item">
-      <div>
-        <div class="stat-value">₹4.2B+</div>
-        <div class="stat-label">Assets Managed</div>
-      </div>
-    </div>
-    <div class="stat-item">
-      <div>
-        <div class="stat-value">180K+</div>
-        <div class="stat-label">Active Users</div>
-      </div>
-    </div>
-    <div class="stat-item">
-      <div>
-        <div class="stat-value">99.99%</div>
-        <div class="stat-label">Uptime SLA</div>
-      </div>
-    </div>
-    <div class="stat-item">
-      <div>
-        <div class="stat-value">4.9 ★</div>
-        <div class="stat-label">App Rating</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ SERVICES ═══ -->
-<section class="services" id="services">
-  <div class="services-header">
-    <p class="section-tag">Services</p>
-    <h2 class="section-head">Choose Your Query Type</h2>
-    <p class="section-lead">Everything you need to manage your financial life, organised and accessible.</p>
-  </div>
-
-  <div class="cards-grid">
-    <div class="card" data-delay="0" id="card-1" onclick="window.location.href='login.html'">
-      <div class="card-icon">🧾</div>
-      <div class="card-title">Tax Records</div>
-      <div class="card-desc">File and track ITR, view Form 16, AIS, and get AI-powered deduction suggestions.</div>
-      <div class="card-arrow">Explore →</div>
-    </div>
-    <div class="card" data-delay="1"  id="card-2" onclick="window.location.href='login.html'">
-      <div class="card-icon">🏦</div>
-      <div class="card-title">Bank Statements</div>
-      <div class="card-desc">Aggregate statements from all your banks, auto-categorise transactions and spot anomalies.</div>
-      <div class="card-arrow">Explore →</div>
-    </div>
-    <div class="card" data-delay="2" id="card-3" onclick="window.location.href='login.html'">
-      <div class="card-icon">📲</div>
-      <div class="card-title">UPI Transactions</div>
-      <div class="card-desc">Full UPI history across apps — PhonePe, GPay, Paytm — in one unified view.</div>
-      <div class="card-arrow">Explore →</div>
-    </div>
-    <div class="card" data-delay="3" id="card-4" onclick="window.location.href='login.html'">
-      <div class="card-icon">💳</div>
-      <div class="card-title">Credit Card Bills</div>
-      <div class="card-desc">Track due dates, minimum payments, rewards points and optimise spending limits.</div>
-      <div class="card-arrow">Explore →</div>
-    </div>
-    <div class="card" data-delay="4" id="card-5" onclick="window.location.href='login.html'">
-      <div class="card-icon">🏠</div>
-      <div class="card-title">Loan Documents</div>
-      <div class="card-desc">Manage home, personal and auto loans. Track EMIs, prepayments and interest savings.</div>
-      <div class="card-arrow">Explore →</div>
-    </div>
-    <div class="card" data-delay="5" id="card-6" onclick="window.location.href='login.html'">
-      <div class="card-icon">📄</div>
-      <div class="card-title">Invoices</div>
-      <div class="card-desc">Generate GST-compliant invoices, manage B2B billing, and automate payment reminders.</div>
-      <div class="card-arrow">Explore →</div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ HOW IT WORKS ═══ -->
-<section class="features" id="how-it-works">
-  <div class="features-inner">
-
-    <div class="features-visual" aria-hidden="true">
-      <div class="feat-card">
-        <div class="feat-card-label">Portfolio Value</div>
-        <div class="feat-card-val">₹18,42,500</div>
-        <div class="feat-card-sub">▲ +8.4% this month</div>
-        <div class="feat-bar"><div class="feat-bar-fill" style="--w:72%"></div></div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-card-label">Credit Score</div>
-        <div class="feat-card-val">792</div>
-        <div class="feat-card-sub">▲ Excellent</div>
-        <div class="feat-bar"><div class="feat-bar-fill" style="--w:85%"></div></div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-card-label">Monthly Savings</div>
-        <div class="feat-card-val">₹32,000</div>
-        <div class="feat-card-sub">▲ +12% vs last month</div>
-        <div class="feat-bar"><div class="feat-bar-fill" style="--w:60%"></div></div>
-      </div>
-    </div>
-
-    <div>
-      <p class="section-tag">How It Works</p>
-      <h2 class="section-head">Three steps to financial clarity</h2>
-      <div class="steps" style="margin-top:40px">
-        <div class="step">
-          <div class="step-num">01</div>
-          <div>
-            <div class="step-title">Connect Your Accounts</div>
-            <div class="step-desc">Securely link your banks, UPI apps, and credit cards with bank-grade 256-bit encryption. Takes under 2 minutes.</div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">02</div>
-          <div>
-            <div class="step-title">AI Analyses Your Finances</div>
-            <div class="step-desc">Our intelligent engine auto-categorises transactions, detects anomalies, and flags opportunities to save more.</div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">03</div>
-          <div>
-            <div class="step-title">Act on Smart Insights</div>
-            <div class="step-desc">Get personalised recommendations — from tax savings to loan prepayment strategies — all in plain English.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ TESTIMONIALS ═══ -->
-<section class="testimonials" id="testimonials">
-  <p class="section-tag">Testimonials</p>
-  <h2 class="section-head">Loved by 180,000+ users</h2>
-
-  <div class="testi-grid">
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Finzo saved me ₹68,000 in taxes this year by catching deductions I'd completely missed. The AI suggestions are genuinely impressive."</p>
-      <div class="testi-author">
-        <div class="testi-avatar">A</div>
-        <div>
-          <div class="testi-name">Arjun Mehta</div>
-          <div class="testi-role">Software Engineer, Pune</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Managing invoices for my 3 businesses used to be a nightmare. Now I do it all in Finzo in under 10 minutes a month."</p>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:linear-gradient(135deg,#059669,#10b981)">P</div>
-        <div>
-          <div class="testi-name">Priya Sharma</div>
-          <div class="testi-role">Business Owner, Mumbai</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Credit score jumped from 680 to 792 in 8 months following Finzo's step-by-step recommendations. Life-changing platform."</p>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:linear-gradient(135deg,#d97706,#f59e0b)">R</div>
-        <div>
-          <div class="testi-name">Rahul Desai</div>
-          <div class="testi-role">Chartered Accountant, Bangalore</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ CTA BANNER ═══ -->
-<div class="cta-banner">
-  <h2>Ready to Take Control of<br>Your Finances?</h2>
-  <p>Join over 180,000 Indians already growing smarter with Finzo.</p>
-  <div class="cta-actions">
-    <a href="login.html" class="btn-primary">Start for Free →</a>
-    <a href="#contact" class="btn-outline">Talk to Us</a>
-  </div>
-</div>
-
-<!-- ═══ FOOTER ═══ -->
-<footer id="contact">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <div class="nav-logo" style="font-size:22px">Finzo<span style="color:#38bdf8">.</span></div>
-        <p>Smart wealth. Seamless security. Limitless growth. India's most trusted financial management platform.</p>
-        <div style="margin-top:20px;font-size:14px;color:#4e7499;">
-          <div>📞 +91 9876543210</div>
-          <div style="margin-top:6px">✉️ info@finzo.com</div>
-          <div style="margin-top:6px">🏢 123 Finance Street, Pune, MH 411033</div>
-        </div>
-      </div>
-
-      <div class="footer-col">
-        <h4>Services</h4>
-        <ul>
-          <li><a href="#">Tax Records</a></li>
-          <li><a href="#">Bank Statements</a></li>
-          <li><a href="#">UPI Transactions</a></li>
-          <li><a href="#">Credit Card Bills</a></li>
-          <li><a href="#">Loan Documents</a></li>
-          <li><a href="#">Invoices</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Press</a></li>
-          <li><a href="#">Partners</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>Legal</h4>
-        <ul>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Cookie Policy</a></li>
-          <li><a href="#">GDPR</a></li>
-          <li><a href="#">Security</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <span>© 2026 Finzo Technologies Pvt. Ltd. All rights reserved.</span>
-      <div class="footer-socials">
-        <a class="social-btn" href="#" title="Twitter">𝕏</a>
-        <a class="social-btn" href="#" title="LinkedIn">in</a>
-        <a class="social-btn" href="#" title="Instagram">IG</a>
-        <a class="social-btn" href="#" title="YouTube">▶</a>
-      </div>
-    </div>
-  </div>
-</footer>
 
 <script>
-/* ── Navbar scroll shrink ── */
-const navbar = document.getElementById("navbar");
-window.addEventListener("scroll", () => {
-  navbar.classList.toggle("scrolled", window.scrollY > 60);
+
+const navbar=document.getElementById("navbar");
+
+window.addEventListener("scroll",()=>{
+  navbar.classList.toggle("scrolled",window.scrollY>60);
 });
 
-/* ── Intersection Observer for .card and .testi-card ── */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
     if(entry.isIntersecting){
-      const el = entry.target;
-      const delay = (parseInt(el.dataset.delay) || 0) * 100;
-      setTimeout(() => el.classList.add("visible"), delay);
+      const el=entry.target;
+      const delay=(parseInt(el.dataset.delay)||0)*100;
+      setTimeout(()=>el.classList.add("visible"),delay);
       observer.unobserve(el);
     }
   });
-}, { threshold: 0.12 });
+},{threshold:0.12});
 
-document.querySelectorAll(".card, .testi-card").forEach(el => observer.observe(el));
+document.querySelectorAll(".card,.testi-card")
+.forEach(el=>observer.observe(el));
 
-/* ── Smooth card transition (set custom transition-delay) ── */
-document.querySelectorAll(".card").forEach((card, i) => {
-  card.style.transitionDelay = (i * 0.07) + "s";
-});
+function countUp(el,target,suffix,duration=1800){
 
-/* ── Count-up animation for stats ── */
-function countUp(el, target, suffix, duration = 1800){
-  const isFloat = target % 1 !== 0;
-  let start = 0;
-  const step = target / (duration / 16);
-  const tick = () => {
-    start = Math.min(start + step, target);
-    el.textContent = (isFloat ? start.toFixed(2) : Math.floor(start))
-      .toLocaleString("en-IN") + suffix;
-    if(start < target) requestAnimationFrame(tick);
+  const isFloat=target%1!==0;
+  let start=0;
+
+  const step=target/(duration/16);
+
+  const tick=()=>{
+
+    start=Math.min(start+step,target);
+
+    el.textContent=
+    (isFloat?start.toFixed(2):Math.floor(start))
+    .toLocaleString("en-IN")+suffix;
+
+    if(start<target)requestAnimationFrame(tick);
+
   };
+
   requestAnimationFrame(tick);
 }
-
-const statValues = [
-  { el: document.querySelectorAll(".stat-value")[0], val: 4.2, suffix: "B+" },
-  { el: document.querySelectorAll(".stat-value")[1], val: 180, suffix: "K+" },
-  { el: document.querySelectorAll(".stat-value")[2], val: 99.99, suffix: "%" },
-  { el: document.querySelectorAll(".stat-value")[3], val: 4.9, suffix: " ★" },
-];
-
-const statsObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if(e.isIntersecting){
-      statValues.forEach(s => countUp(s.el, s.val, s.suffix));
-      statsObserver.disconnect();
-    }
-  });
-}, { threshold: 0.5 });
-
-const statsBar = document.querySelector(".stats-bar");
-if(statsBar) statsObserver.observe(statsBar);
-
-/* ── Staggered card transition duration sync ── */
-document.querySelectorAll(".testi-card").forEach((card, i) => {
-  card.style.transitionDelay = (i * 0.12) + "s";
-});
-
-
 
 </script>
 
