@@ -1,657 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finzo - Personal Expense Tracker</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finzo - Personal Expense Tracker</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
+
 <body>
-    <div class="app-container">
-        <!-- Sidebar -->
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <i class="fa-solid fa-wallet logo-icon"></i>
-                <span class="logo-text">Finzo</span>
-            </div>
-            
-            <ul class="nav-links">
-                <li class="nav-item active" data-target="dashboard">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Dashboard</span>
-                </li>
-                <li class="nav-item" data-target="documents">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <span>Documents</span>
-                </li>
-                <li class="nav-item" data-target="transactions">
-                    <i class="fa-solid fa-list"></i>
-                    <span>Transactions</span>
-                </li>
-                <li class="nav-item" data-target="analysis">
-                    <i class="fa-solid fa-chart-pie"></i>
-                </li>
-                <li class="nav-item" data-target="budget" data-tooltip="Budget">
-                    <i class="fa-solid fa-wallet"></i>
-                </li>
-                <li class="nav-item" data-target="ai-insights" data-tooltip="Insights">
-                    <i class="fa-regular fa-lightbulb"></i>
-                </li>
-                <li class="nav-item" data-target="risk-score" data-tooltip="Risk Score">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </li>
-            </ul>
 
-            <div class="nav-footer">
-            </div>
-        </nav>
+<div class="app-container">
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Header -->
-            <header class="top-bar">
-                <div class="page-title">
-                    <!-- Title updates dynamically via JS or static 'Dashboard' initially -->
-                    <h1 id="page-header-title">Dashboard</h1>
-                </div>
+<nav class="sidebar">
 
-                <div class="header-actions">
-                    <!-- Live Indicator -->
-                    <div class="live-indicator">
-                        <span class="live-dot"></span>
-                        <span>Live</span>
-                    </div>
-                    <div class="user-profile" style="display:flex;align-items:center;gap:12px;">
-                                <div class="avatar" style="width:36px;height:36px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;color:white;">U</div>
-                                <span style="font-size:14px;font-weight:500;">User</span>
-                            </div>
-                </div>
-            </header>
+<div class="sidebar-header">
+<i class="fa-solid fa-wallet logo-icon"></i>
+<span class="logo-text">Finzo</span>
+</div>
 
-            <!-- Main Page Area -->
-            <main>
-                <!-- DASHBOARD SECTION -->
-                <section id="dashboard" class="page-section active">
-                    <div class="page-content">
-                        
-                        <!-- ROW 1: KPIs -->
-                        <div class="kpi-grid">
-                            <!-- KPI 1: Total Spent -->
-                            <div class="kpi-card">
-                                <div class="kpi-header">
-                                    <div class="kpi-icon icon-purple"><i class="fa-solid fa-wallet"></i></div>
-                                    <span class="kpi-change text-danger"><i class="fa-solid fa-arrow-up"></i> 12%</span>
-                                </div>
-                                <div class="kpi-label">Total Spent</div>
-                                <div class="kpi-value" id="dash-total-spent">₹0</div>
-                            </div>
+<ul class="nav-links">
 
-                            <!-- KPI 2: Net Savings (mapped to balance) -->
-                            <div class="kpi-card">
-                                <div class="kpi-header">
-                                    <div class="kpi-icon icon-green"><i class="fa-solid fa-piggy-bank"></i></div>
-                                    <span class="kpi-change text-success"><i class="fa-solid fa-arrow-up"></i> 5%</span>
-                                </div>
-                                <div class="kpi-label">Net Savings</div>
-                                <div class="kpi-value" id="dash-balance">₹0</div>
-                            </div>
+<li class="nav-item active" data-target="dashboard">
+<i class="fa-solid fa-house"></i>
+<span>Dashboard</span>
+</li>
 
-                            <!-- KPI 4: Risk Score (Static) -->
-                            <div class="kpi-card">
-                                <div class="kpi-header">
-                                    <div class="kpi-icon icon-red"><i class="fa-solid fa-shield-halved"></i></div>
-                                    <span class="kpi-change text-success">Low Risk</span>
-                                </div>
-                                <div class="kpi-label">Risk Score</div>
-                                <div class="kpi-value">85/100</div>
-                            </div>
-                        </div>
+<li class="nav-item" data-target="documents">
+<i class="fa-solid fa-cloud-arrow-up"></i>
+<span>Documents</span>
+</li>
 
-                        <!-- Hidden elements for JS compatibility -->
-                        <div style="display:none;">
-                            <span id="dash-total-income"></span>
-                            <span id="hero-total-income"></span>
-                            <span id="hero-total-savings"></span>
-                        </div>
+<li class="nav-item" data-target="transactions">
+<i class="fa-solid fa-list"></i>
+<span>Transactions</span>
+</li>
 
-                        <!-- ROW 2: Charts -->
-                        <div class="charts-row">
-                            <!-- Left: Spending Trend -->
-                            <div class="chart-card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Spending Trend</h3>
-                                </div>
-                                <div class="chart-wrapper">
-                                    <canvas id="spendingChart"></canvas>
-                                </div>
-                            </div>
+<li class="nav-item" data-target="analysis">
+<i class="fa-solid fa-chart-pie"></i>
+</li>
 
-                            <!-- Right: Category Breakdown -->
-                            <div class="chart-card">
-                                <div style="display:flex;flex-direction:column;height:100%;">
-                                    <h3 style="margin:0 0 16px;font-size:15px;font-weight:600;color:#e2e8f0;">Category Breakdown</h3>
-                                    <div style="display:flex;align-items:center;gap:16px;">
-                                        <div style="width:120px;height:120px;flex-shrink:0;position:relative;">
-                                            <canvas id="categoryChart"></canvas>
-                                        </div>
-                                        <div id="category-legend" style="flex:1;display:flex;flex-direction:column;gap:6px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<li class="nav-item" data-target="budget">
+<i class="fa-solid fa-wallet"></i>
+</li>
 
-                        <!-- ROW 3: Bottom -->
-                        <div class="bottom-row">
-                            <!-- Recent Transactions -->
-                            <div class="chart-card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Recent Transactions</h3>
-                                    <a href="#" id="dash-view-all" class="text-primary" style="text-decoration:none;font-size:13px;font-weight:600;color: white !important;">View All</a>
-                                </div>
-                                <div class="tx-list">
-                                    <table class="docs-table" style="width:100%;">
-                                        <tbody id="dash-recent-transactions">
-                                            <!-- Populated by JS -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+<li class="nav-item" data-target="ai-insights">
+<i class="fa-regular fa-lightbulb"></i>
+</li>
 
-                            <!-- AI Insight -->
-                            <div class="chart-card">
-                                <div class="insight-content">
-                                    <div style="display:flex;justify-content:space-between;align-items:center;">
-                                        <div style="display:flex;align-items:center;gap:8px;">
-                                            <i class="fa-regular fa-lightbulb" style="color:var(--warning);font-size:20px;"></i>
-                                            <h3 class="card-title">AI Insight</h3>
-                                        </div>
-                                        <span class="insight-badge">Behavioral Pattern</span>
-                                    </div>
-                                    <div class="insight-quote">
-                                        "You tend to overspend on <span class="highlight">Food & Dining</span> on weekends, exceeding your average by <span class="highlight">25%</span>."
-                                    </div>
-                                    <div class="insight-footer">
-                                        <span>Based on last 30 days activity</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <script>
-                    const user = localStorage.getItem('finzo_user');
-                    if (!user) {
-                        window.location.href = 'login.html';
-                    }
+<li class="nav-item" data-target="risk-score">
+<i class="fa-solid fa-shield-halved"></i>
+</li>
 
-                    function logout() {
-                        localStorage.removeItem('finzo_user');
-                        window.location.href = 'login.html';
-                    }
+</ul>
 
-                    const userNameDisplay = document.querySelector('.user-profile span');
-                    if (userNameDisplay) {
-                        userNameDisplay.textContent = localStorage.getItem('finzo_user') || 'User';
-                    }
-                    
-                    const userProfileDiv = document.querySelector('.user-profile');
-                    if (userProfileDiv) {
-                        const logoutBtn = document.createElement('button');
-                        logoutBtn.textContent = 'Logout';
-                        logoutBtn.onclick = logout;
-                        logoutBtn.className = 'card-action';
-                        logoutBtn.style.cssText = 'margin-left:8px;font-weight:600;color:var(--text-muted);border:1px solid var(--border);background:var(--bg-hover);padding:6px 12px;border-radius:8px;cursor:pointer;transition:all 0.2s ease;';
-                        
-                        logoutBtn.onmouseover = function() {
-                            this.style.color = '#ef4444';
-                            this.style.borderColor = 'rgba(239,68,68,0.3)';
-                            this.style.background = 'rgba(239,68,68,0.1)';
-                        };
-                        
-                        logoutBtn.onmouseout = function() {
-                            this.style.color = 'var(--text-muted)';
-                            this.style.borderColor = 'var(--border)';
-                            this.style.background = 'var(--bg-hover)';
-                        };
-                        
-                        userProfileDiv.appendChild(logoutBtn);
-                    }
-                </script>
+<div class="nav-footer"></div>
 
-                <!-- OTHER SECTIONS (Keeping structure but applying new CSS classes implicitly via global styles) -->
-                
-                <section id="documents" class="page-section hidden">
-                    <div class="page-content">
-                        <h1 class="page-title">Documents</h1>
-                        <p class="page-subtitle">Manage your financial files and invoices</p>
-                        
-                        <!-- Section 1: Type Selector -->
-                        <div class="doc-type-section">
-                            <div class="doc-type-label">Document Type</div>
-                            <div class="doc-type-grid">
-                                <div class="doc-type-btn doc-card active" data-type="bank_statement"><i class="fa-solid fa-building-columns"></i><span>Bank Statement</span></div>
-                                <div class="doc-type-btn doc-card" data-type="credit_card"><i class="fa-regular fa-credit-card"></i><span>Credit Card</span></div>
-                                <div class="doc-type-btn doc-card" data-type="upi_export"><i class="fa-solid fa-mobile-screen"></i><span>UPI History</span></div>
-                                <div class="doc-type-btn doc-card" data-type="invoice"><i class="fa-solid fa-file-invoice-dollar"></i><span>Invoice / Bill</span></div>
-                                <div class="doc-type-btn doc-card" data-type="loan_document"><i class="fa-solid fa-file-contract"></i><span>Loan Document</span></div>
-                                <div class="doc-type-btn doc-card" data-type="tax_record"><i class="fa-solid fa-receipt"></i><span>Tax Record</span></div>
-                                <div class="doc-type-btn doc-card" data-type="salary_slip"><i class="fa-solid fa-briefcase"></i><span>Salary Slip</span></div>
-                            </div>
-                        </div>
+</nav>
 
-                        <!-- Section 2: Upload Area -->
-                        <div class="card">
-                            <div class="card-title">Upload New File</div>
-                            <div class="upload-area" id="upload-area">
-                                <input type="file" id="file-input" accept=".pdf, .jpg, .jpeg, .png, .csv" hidden>
-                                <div class="upload-content">
-                                    <i class="fa-solid fa-cloud-arrow-up upload-icon" style="color: #6366f1;"></i>
-                                    <div class="upload-title">Click to upload or drag and drop</div>
-                                    <div class="upload-subtitle">PDF, JPG, PNG or CSV (max 10MB)</div>
-                                    <button class="choose-file-btn" onclick="document.getElementById('file-input').click()">Choose File</button>
-                                </div>
-                            </div>
-                            
-                            <!-- Processing UI -->
-                            <div class="processing-card hidden" id="processing-card" style="margin-top: 20px; border: 1px solid #e5e7eb; padding: 20px; border-radius: 12px;">
-                                <div class="processing-header">
-                                    <span class="filename" id="processing-filename" style="font-weight: 600;">file.pdf</span>
-                                </div>
-                                <div class="progress-container" style="height: 6px; background: #f3f4f6; border-radius: 3px; margin: 15px 0; overflow: hidden;">
-                                    <div class="progress-bar" id="progress-bar" style="height: 100%; background: #6366f1; width: 0%;"></div>
-                                </div>
-                                <ul class="processing-steps" style="list-style: none; font-size: 13px; color: #6b7280;">
-                                    <li class="step" id="step-1"><span class="step-text">Uploading...</span></li>
-                                </ul>
-                                <div class="success-banner hidden" id="success-banner" style="margin-top: 15px; background: #ecfdf5; color: #065f46; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 500;">
-                                    <i class="fa-solid fa-check-circle"></i> Processing complete!
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Section 3: Table -->
-                        <div class="card">
-                            <div class="card-title">Uploaded Files</div>
-                            <table class="docs-table">
-                                <thead>
-                                    <tr>
-                                        <th>File Name</th>
-                                        <th>Type</th>
-                                        <th>Date</th>
-                                        <th>Txns</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="documents-table-body">
-                                    <!-- Populated by JS -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
+<div class="main-content">
 
-                <section id="transactions" class="page-section hidden">
-                    <div class="page-content">
-                        <h1 class="page-title">Transactions</h1>
-                        <p class="page-subtitle">View and manage all your transactions</p>
 
-                        <!-- Section 1: Filter Bar -->
-                        <div class="card">
-                            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;"> 
-                                <div style="position:relative;flex:1;min-width:220px;"> 
-                                    <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#64748b;font-size:13px;pointer-events:none;"></i> 
-                                    <input type="text" id="tx-search-input" placeholder="Search transactions..." style="width:100%;box-sizing:border-box;padding:10px 16px 10px 40px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);font-size:14px;color:#e2e8f0;outline:none;font-family:'DM Sans',sans-serif;"> 
-                                </div> 
-                                <select id="tx-category-filter" style="padding:10px 16px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:#1e2235;font-size:14px;color:#e2e8f0;outline:none;font-family:'DM Sans',sans-serif;cursor:pointer;min-width:160px;"> 
-                                    <option value="">All Categories</option> 
-                                    <option value="Food">Food</option> 
-                                    <option value="Transport">Transport</option> 
-                                    <option value="Shopping">Shopping</option> 
-                                    <option value="Housing">Housing</option> 
-                                    <option value="Utilities">Utilities</option> 
-                                    <option value="Entertainment">Entertainment</option> 
-                                    <option value="Health">Health</option> 
-                                    <option value="Investment">Investment</option> 
-                                    <option value="Income">Income</option> 
-                                    <option value="Others">Others</option> 
-                                </select> 
-                            </div>
-                        </div>
-                        
-                        <!-- Section 2: Summary Strip -->
-                        <div class="stat-row">
-                             <div class="stat-card">
-                                 <div class="stat-label">Total Debits</div>
-                                 <div class="stat-value text-danger stat-val" id="tx-total-debits">₹0</div>
-                             </div>
-                             <div class="stat-card">
-                                 <div class="stat-label">Total Credits</div>
-                                 <div class="stat-value text-success stat-val" id="tx-total-credits">₹0</div>
-                             </div>
-                             <div class="stat-card">
-                                 <div class="stat-label">Net Balance</div>
-                                 <div class="stat-value text-success stat-val" id="tx-net-balance">₹0</div>
-                             </div>
-                        </div>
+<header class="top-bar">
 
-                        <!-- Section 3: Transactions Table -->
-                        <div class="card">
-                            <table class="docs-table">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Merchant</th>
-                                        <th>Category</th>
-                                        <th>Type</th>
-                                        <th>Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="transactions-table-body">
-                                    <!-- Populated by JS -->
-                                </tbody>
-                            </table>
-                            
-                            <div class="pagination-bar" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #f3f4f6;">
-                                <span id="tx-pagination-info" style="font-size: 13px; color: #6b7280;"></span>
-                                <div class="pagination-controls" style="display: flex; gap: 8px;">
-                                    <button id="btn-prev-page" class="doc-type-btn" style="padding: 6px 14px; font-size: 13px;">Previous</button>
-                                    <button id="btn-next-page" class="doc-type-btn" style="padding: 6px 14px; font-size: 13px;">Next</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+<div class="page-title">
+<h1 id="page-header-title">Dashboard</h1>
+</div>
 
-                <!-- Analysis, Recurring, Upcoming, Budget, AI Insights, Risk Score SECTIONS -->
-                <!-- We keep the IDs so JS finds them, but rely on new global CSS styles -->
-                
-                <section id="analysis" class="page-section hidden">
-                    <div class="page-content">
-                        <h1 class="page-title">Spending Analysis</h1>
-                        <p class="page-subtitle">Detailed breakdown of your expenses</p>
+<div class="header-actions">
 
-                        <!-- Fix 5: Month Tabs -->
-                        <div class="card" style="padding:12px 20px;">
-                            <div style="display:flex;gap:8px;">
-                                <button class="month-tab active">Feb</button>
-                                <button class="month-tab">Jan</button>
-                                <button class="month-tab">Dec</button>
-                                <button class="month-tab">Nov</button>
-                                <button class="month-tab">Oct</button>
-                            </div>
-                        </div>
+<div class="live-indicator">
+<span class="live-dot"></span>
+<span>Live</span>
+</div>
 
-                        <!-- Fix 1: Top 3 Stats Grid -->
-                        <div class="stat-row">
-                            <div class="stat-card">
-                                <div class="stat-label">Total Spent</div>
-                                <div class="stat-value" id="totalSpent">₹0</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-label">Avg Daily</div>
-                                <div class="stat-value" id="avgDaily">₹0</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-label">Highest Day</div>
-                                <div class="stat-value" id="highestDay">₹0</div>
-                            </div>
-                        </div>
+<div class="user-profile" style="display:flex;align-items:center;gap:12px;">
 
-                        <div class="dashboard-grid" style="height: auto; overflow: visible;">
-                             <!-- Fix 2: Category Chart -->
-                             <div class="card">
-                                 <div class="card-title">Spending by Category</div>
-                                 <div class="chart-wrapper">
-                                     <canvas id="analysisCategoryChart"></canvas>
-                                 </div>
-                             </div>
-                             
-                             <!-- Fix 3: Weekly Chart -->
-                             <div class="card">
-                                 <div class="card-title">Weekly Breakdown</div>
-                                 <div class="chart-wrapper">
-                                     <canvas id="analysisWeeklyChart"></canvas>
-                                 </div>
-                             </div>
-                        </div>
+<div class="avatar"
+style="width:36px;height:36px;background:var(--primary);
+border-radius:50%;display:flex;
+align-items:center;
+justify-content:center;
+font-weight:600;
+color:white;">U</div>
 
-                        <!-- Fix 4: Top Merchants Table -->
-                        <div class="card">
-                            <div class="card-title">Top Merchants</div>
-                            <table class="docs-table">
-                                <thead>
-                                    <tr>
-                                        <th>Merchant</th>
-                                        <th>Category</th>
-                                        <th>Amount</th>
-                                        <th>% of Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="merchantsTableBody">
-                                    <!-- Populated by JS -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
+<span style="font-size:14px;font-weight:500;">User</span>
 
-                <section id="recurring" class="page-section hidden">
-                    <div class="page-content">
-                        <h1 class="page-title">Recurring</h1>
-                        <p class="page-subtitle">Subscriptions and fixed monthly payments</p>
-                        <div class="stat-row">
-                            <div class="stat-card">
-                                <div class="stat-label">Monthly Fixed</div>
-                                <div class="stat-value" id="rec-total-monthly">₹0</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-label">Active</div>
-                                <div class="stat-value" id="rec-active-count">0</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-label">Yearly</div>
-                                <div class="stat-value" id="rec-yearly-proj">₹0</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div id="recurring-list-container"></div>
-                        </div>
-                    </div>
-                </section>
+</div>
 
-                <section id="upcoming" class="page-section hidden">
-                    <div class="page-content">
-                        <h1 class="page-title">Upcoming Payments</h1>
-                        <p class="page-subtitle">Bills and payments due soon</p>
-                        <div class="stat-row">
-                            <div class="stat-card">
-                                <div class="stat-label">Due This Week</div>
-                                <div class="stat-value" id="up-due-week">₹0</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-label">Due This Month</div>
-                                <div class="stat-value" id="up-due-month">₹0</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-label">Overdue</div>
-                                <div class="stat-value" id="up-overdue" style="color:#ef4444;">₹0</div>
-                            </div>
-                        </div>
-                        <div id="upcoming-alert" class="hidden" style="background:#fef2f2;border:1px solid #fca5a5;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;">
-                            <div class="alert-content"><span style="color:#991b1b;font-weight:500;"><i class="fa-solid fa-triangle-exclamation"></i></span></div>
-                            <button class="alert-dismiss" style="background:none;border:none;cursor:pointer;color:#991b1b;"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-                        <div id="upcoming-list-view"></div>
-                    </div>
-                </section>
+</div>
 
-                <section id="budget" class="page-section hidden">
-                    <div class="page-content">
-                        <h1 class="page-title">Budget</h1>
-                        <p class="page-subtitle">Track spending against your limits</p>
-                        <div class="card">
-                            <div style="display:flex;align-items:center;gap:40px;flex-wrap:wrap;">
-                                <div style="position:relative;width:120px;height:120px;flex-shrink:0;">
-                                    <svg class="progress-ring" width="120" height="120" style="transform:rotate(-90deg);">
-                                        <circle class="progress-ring__circle-bg" stroke="#f3f4f6" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
-                                        <circle class="progress-ring__circle" stroke="#6366f1" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
-                                    </svg>
-                                    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">
-                                        <div class="ring-value" style="font-size:20px;font-weight:700;color:#111827;">0%</div>
-                                        <div style="font-size:10px;color:#9ca3af;">Health</div>
-                                    </div>
-                                </div>
-                                <div style="display:flex;flex-direction:column;gap:12px;">
-                                    <div class="mini-stat" style="display:flex;align-items:center;gap:8px;">
-                                        <span style="width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block;"></span>
-                                        <span style="font-size:13px;color:#6b7280;">On Track:</span>
-                                        <span class="mini-stat-value" style="font-weight:600;color:#111827;">0</span>
-                                    </div>
-                                    <div class="mini-stat" style="display:flex;align-items:center;gap:8px;">
-                                        <span style="width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block;"></span>
-                                        <span style="font-size:13px;color:#6b7280;">Over Budget:</span>
-                                        <span class="mini-stat-value" style="font-weight:600;color:#ef4444;">0</span>
-                                    </div>
-                                </div>
-                                <div class="budget-total-bar" style="flex:1;min-width:200px;">
-                                    <div class="total-row" style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;">
-                                        <span style="color:#6b7280;">Total Budget</span>
-                                        <span class="total-val" style="font-weight:600;">₹0</span>
-                                    </div>
-                                    <div class="total-row" style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;">
-                                        <span style="color:#6b7280;">Spent</span>
-                                        <span class="total-val" style="font-weight:600;color:#ef4444;">₹0</span>
-                                    </div>
-                                    <div class="total-row" style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px;">
-                                        <span style="color:#6b7280;">Remaining</span>
-                                        <span class="total-val" style="font-weight:700;color:#10b981;">₹0</span>
-                                    </div>
-                                    <div class="total-progress-bar" style="background:#f3f4f6;border-radius:99px;height:8px;overflow:hidden;">
-                                        <div class="total-fill" style="height:100%;width:0%;background:#6366f1;border-radius:99px;transition:width 0.6s ease;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="budget-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;"></div>
-                    </div>
-                </section>
+</header>
 
-                <section id="ai-insights" class="page-section hidden">
-                    <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;padding:24px 32px 16px;">
-                        <h1>AI Insights</h1>
-                        <button id="btn-run-analysis" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 22px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(99,102,241,0.35);transition:all 0.2s ease;margin-bottom:20px;"> 
-                          <i class="fa-solid fa-wand-magic-sparkles"></i> 
-                          Run Analysis 
-                        </button> 
-                    </div>
-                    <div class="panel-card ai-summary-card">
-                        <div class="ai-summary-header"><div class="ai-bot-icon"><i class="fa-solid fa-robot"></i></div><h3>Summary</h3></div>
-                        <div class="ai-summary-body"><p>Loading...</p></div>
-                        <div class="ai-summary-footer"></div>
-                    </div>
-                    <div class="insights-grid" id="insights-grid-container"></div>
-                </section>
 
-                <section id="risk-score" class="page-section hidden">
-                    <div class="section-header"><h1>Risk Score</h1></div>
-                    
-                    <!-- Top Row: Gauge + Summary -->
-                    <div class="panel-card risk-hero-card" style="margin-bottom: 24px;">
-                        <div class="gauge-wrapper">
-                            <div class="gauge-container">
-                                <div style="position:relative;width:220px;height:120px;">
-                                    <svg viewBox="0 0 200 110" width="220" height="120" style="position:absolute;top:0;left:0;">
-                                        <!-- Background Arc -->
-                                        <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#2a2f42" stroke-width="16" stroke-linecap="round"/>
-                                        
-                                        <!-- Segments (Symmetric) -->
-                                        <!-- Red (High Risk) -->
-                                        <path d="M 20 100 A 80 80 0 0 1 65 30" fill="none" stroke="#ef4444" stroke-width="16" stroke-linecap="round"/>
-                                        <!-- Yellow (Moderate) -->
-                                        <path d="M 70 25 A 80 80 0 0 1 130 25" fill="none" stroke="#f59e0b" stroke-width="16" stroke-linecap="round"/>
-                                        <!-- Green (Low Risk) -->
-                                        <path d="M 135 30 A 80 80 0 0 1 180 100" fill="none" stroke="#10b981" stroke-width="16" stroke-linecap="round"/>
-                                        
-                                        <!-- Needle -->
-                                        <g id="risk-needle-group" style="transform-origin: 100px 100px; transition: transform 1s ease-out;">
-                                            <line x1="100" y1="100" x2="100" y2="28" stroke="#e2e8f0" stroke-width="3" stroke-linecap="round"/>
-                                            <circle cx="100" cy="100" r="5" fill="#e2e8f0"/>
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div style="text-align:center;margin-top:-10px;z-index:2;"> 
-                                  <div class="score-big" style="font-size:48px;font-weight:800;color:#e2e8f0;text-shadow:0 2px 10px rgba(0,0,0,0.3);">0</div> 
-                                  <div style="font-size:12px;color:#94a3b8;font-weight:500;">RISK SCORE</div> 
-                                </div> 
-                                <div style="display:flex;gap:12px;justify-content:center;margin-top:20px;"> 
-                                  <div style="display:flex;align-items:center;gap:6px;">
-                                      <span style="width:8px;height:8px;border-radius:50%;background:#ef4444;"></span>
-                                      <span style="font-size:11px;color:#94a3b8;">High</span>
-                                  </div>
-                                  <div style="display:flex;align-items:center;gap:6px;">
-                                      <span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;"></span>
-                                      <span style="font-size:11px;color:#94a3b8;">Moderate</span>
-                                  </div>
-                                  <div style="display:flex;align-items:center;gap:6px;">
-                                      <span style="width:8px;height:8px;border-radius:50%;background:#10b981;"></span>
-                                      <span style="font-size:11px;color:#94a3b8;">Low</span>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="risk-pills" style="display:none;">
-                                <div class="risk-pill">High</div>
-                                <div class="risk-pill">Moderate</div>
-                                <div class="risk-pill">Low</div>
-                            </div>
-                            <p class="risk-summary"></p>
-                        </div>
-                    </div>
-                    
-                    <!-- Middle Row: Breakdown & History Side-by-Side -->
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
-                        <div class="panel-card breakdown-card" style="margin:0;">
-                            <div class="card-header"><h3>Breakdown</h3></div>
-                            <div class="breakdown-list"></div>
-                        </div>
-                        <div class="panel-card history-card" style="margin:0;">
-                            <div class="card-header"><h3>History</h3></div>
-                            <div class="history-chart-container"><canvas id="riskHistoryChart"></canvas></div>
-                            <p class="history-note"></p>
-                        </div>
-                    </div>
+<main>
 
-                    <!-- Bottom Row: Roadmap -->
-                    <div class="panel-card roadmap-card">
-                         <div class="card-header"><h3>Roadmap</h3></div>
-                         <div class="roadmap-grid"></div>
-                    </div>
-                </section>
 
-            </main>
-        </div>
-    </div>
-    <script src="app.js"></script>
-    <script>
-        const user = localStorage.getItem('finzo_user');
-        if (!user) {
-            window.location.href = 'login.html';
-        }
+<section id="dashboard" class="page-section active">
 
-        function logout() {
-            localStorage.removeItem('finzo_user');
-            window.location.href = 'login.html';
-        }
-    </script>
+<div class="page-content">
+
+
+<div class="kpi-grid">
+
+<div class="kpi-card">
+
+<div class="kpi-header">
+<div class="kpi-icon icon-purple">
+<i class="fa-solid fa-wallet"></i>
+</div>
+
+<span class="kpi-change text-danger">
+<i class="fa-solid fa-arrow-up"></i> 12%
+</span>
+
+</div>
+
+<div class="kpi-label">Total Spent</div>
+
+<div class="kpi-value"
+id="dash-total-spent">₹0</div>
+
+</div>
+
+
+<div class="kpi-card">
+
+<div class="kpi-header">
+
+<div class="kpi-icon icon-green">
+<i class="fa-solid fa-piggy-bank"></i>
+</div>
+
+<span class="kpi-change text-success">
+<i class="fa-solid fa-arrow-up"></i> 5%
+</span>
+
+</div>
+
+<div class="kpi-label">Net Savings</div>
+
+<div class="kpi-value"
+id="dash-balance">₹0</div>
+
+</div>
+
+
+<div class="kpi-card">
+
+<div class="kpi-header">
+
+<div class="kpi-icon icon-red">
+<i class="fa-solid fa-shield-halved"></i>
+</div>
+
+<span class="kpi-change text-success">
+Low Risk
+</span>
+
+</div>
+
+<div class="kpi-label">Risk Score</div>
+
+<div class="kpi-value">
+85/100
+</div>
+
+</div>
+
+</div>
+
+
+<div style="display:none;">
+
+<span id="dash-total-income"></span>
+
+<span id="hero-total-income"></span>
+
+<span id="hero-total-savings"></span>
+
+</div>
+
+
+<div class="charts-row">
+
+<div class="chart-card">
+
+<div class="card-header">
+<h3 class="card-title">
+Spending Trend
+</h3>
+</div>
+
+<div class="chart-wrapper">
+<canvas id="spendingChart"></canvas>
+</div>
+
+</div>
+
+
+<div class="chart-card">
+
+<div style="display:flex;
+flex-direction:column;
+height:100%;">
+
+<h3 style="margin:0 0 16px;
+font-size:15px;
+font-weight:600;
+color:#e2e8f0;">
+
+Category Breakdown
+
+</h3>
+
+
+<div style="display:flex;
+align-items:center;
+gap:16px;">
+
+<div style="width:120px;
+height:120px;
+flex-shrink:0;
+position:relative;">
+
+<canvas id="categoryChart"></canvas>
+
+</div>
+
+<div id="category-legend"
+style="flex:1;
+display:flex;
+flex-direction:column;
+gap:6px;"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<script>
+
+const user = localStorage.getItem('finzo_user');
+
+if (!user) {
+window.location.href = 'login.html';
+}
+
+function logout() {
+
+localStorage.removeItem('finzo_user');
+
+window.location.href = 'login.html';
+
+}
+
+</script>
+
+
+
+</main>
+
+</div>
+
+</div>
+
+
+<script src="app.js"></script>
+
+
+<script>
+
+const user = localStorage.getItem('finzo_user');
+
+if (!user) {
+
+window.location.href = 'login.html';
+
+}
+
+function logout() {
+
+localStorage.removeItem('finzo_user');
+
+window.location.href = 'login.html';
+
+}
+
+</script>
+
 </body>
+
 </html>
