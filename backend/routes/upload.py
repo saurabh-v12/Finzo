@@ -14,10 +14,6 @@ router = APIRouter()
 
 UPLOAD_DIR = "backend/uploads/statements"
 
-
-# ==============================
-# Upload Document
-# ==============================
 @router.post("/document")
 async def upload_document(
     file: UploadFile = File(...),
@@ -62,48 +58,32 @@ async def upload_document(
         "message": "Processing started"
     }
 
-
-# ==============================
-# Delete Document
-# ==============================
 @router.delete("/documents/{document_id}")
 def delete_document(document_id: int, db: Session = Depends(get_db)):
-    # 1. Find document
+
     document = db.query(Document).filter(Document.id == document_id).first()
     if not document:
         raise HTTPException(status_code=404, detail="Document not found")
 
-    # 2. Delete transactions
     db.query(Transaction).filter(Transaction.document_id == document_id).delete()
     
-    # 3. Delete insights (since data changed)
     db.query(Insight).delete()
 
-    # 4. Delete file from disk
     if document.file_path and os.path.exists(document.file_path):
         try:
             os.remove(document.file_path)
         except Exception as e:
             print(f"Error deleting file {document.file_path}: {e}")
 
-    # 5. Delete document record
     db.delete(document)
     db.commit()
 
     return {"message": "Document deleted successfully", "document_id": document_id}
 
-
-# ==============================
-# Get All Documents
-# ==============================
 @router.get("/documents")
 def get_documents(db: Session = Depends(get_db)):
     return db.query(Document).all()
 
-
-# ==============================
-# Get Single Document
-# ==============================
 @router.get("/documents/{document_id}")
 def get_document(document_id: int, db: Session = Depends(get_db)):
 
@@ -114,10 +94,6 @@ def get_document(document_id: int, db: Session = Depends(get_db)):
 
     return document
 
-
-# ==============================
-# Debug Extraction
-# ==============================
 @router.get("/debug/{document_id}")
 def debug_document_extraction(document_id: int, db: Session = Depends(get_db)):
 
@@ -148,10 +124,6 @@ def debug_document_extraction(document_id: int, db: Session = Depends(get_db)):
     except Exception as e:
         return {"error": str(e)}
 
-
-# ==============================
-# GEMINI CONNECTION TEST
-# ==============================
 @router.get("/test-parse/{document_id}")
 def test_parse(document_id: int, db: Session = Depends(get_db)):
 
