@@ -34,6 +34,7 @@ def get_insights(db: Session = Depends(get_db)):
     insights = db.query(Insight).order_by( 
         Insight.generated_at.desc() 
     ).all() 
+
     return {
         "insights": [
             {
@@ -54,6 +55,7 @@ def get_insights(db: Session = Depends(get_db)):
 def generate_insights(db: Session = Depends(get_db)): 
     analyzer = InsightAnalyzer() 
     results = analyzer.generate(db) 
+
     return { 
         "insights": results, 
         "count": len(results) 
