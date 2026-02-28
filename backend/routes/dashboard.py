@@ -9,19 +9,17 @@ router = APIRouter()
 
 @router.get("/summary")
 def get_dashboard_summary(db: Session = Depends(get_db)):
-    # Calculate totals
+
     total_spent = db.query(func.sum(Transaction.amount)).filter(Transaction.transaction_type == "debit").scalar() or 0
     total_income = db.query(func.sum(Transaction.amount)).filter(Transaction.transaction_type == "credit").scalar() or 0
     
     transaction_count = db.query(Transaction).count()
     document_count = db.query(Document).count()
     
-    # Calculate savings rate
     savings_rate = 0
     if total_income > 0:
         savings_rate = ((total_income - total_spent) / total_income) * 100
         
-    # Get top category
     top_category_result = db.query(
         Transaction.category, 
         func.sum(Transaction.amount).label('total')
@@ -44,6 +42,7 @@ def get_dashboard_summary(db: Session = Depends(get_db)):
 
 @router.get("/categories")
 def get_category_breakdown(db: Session = Depends(get_db)):
+
     total_spent = db.query(func.sum(Transaction.amount)).filter(Transaction.transaction_type == "debit").scalar() or 1
     
     categories = db.query(
@@ -68,8 +67,7 @@ def get_category_breakdown(db: Session = Depends(get_db)):
 
 @router.get("/monthly-trend")
 def get_monthly_trend(db: Session = Depends(get_db)):
-    
-   
+
     return [
         {"month": "Feb", "year": "2026", "total_amount": 42850},
         {"month": "Jan", "year": "2026", "total_amount": 38200},
