@@ -52,7 +52,6 @@ Raw text:
                 for t in transactions: 
                     if not t.get('date') or t['date'] == 'null': 
                         t['date'] = '01-01-2026' 
-                    # ensure format is DD-MM-YYYY 
                     date_str = str(t['date']).strip() 
                     t['date'] = date_str 
                 return transactions 
@@ -65,7 +64,6 @@ Raw text:
         if len(raw_text) <= 10000:
             return self.parse(raw_text, doc_type)
         
-        # Split into chunks at newline boundaries
         chunks = []
         words = raw_text.split('\n')
         current_chunk = []
@@ -84,7 +82,6 @@ Raw text:
         
         print(f"Processing {len(chunks)} chunks in parallel")
         
-        # Process all chunks simultaneously
         from concurrent.futures import ThreadPoolExecutor, as_completed
         all_transactions = []
         
@@ -100,7 +97,6 @@ Raw text:
                 except Exception as e:
                     print(f"Chunk error: {e}")
         
-        # Remove duplicates
         seen = set()
         unique = []
         for t in all_transactions:
