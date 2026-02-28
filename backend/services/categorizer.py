@@ -12,6 +12,7 @@ def validate_category(merchant, description, ai_category):
     if any(k in merchant_lower for k in food_keywords):
         return "Food"
         
+        
     transport_keywords = [
         "uber", "ola", "rapido", "metro", "petrol", "fuel", "shell", "hpcl", "bpcl"
     ]
