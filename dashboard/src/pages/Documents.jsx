@@ -40,7 +40,7 @@ export default function Documents() {
 
   const fetchDocuments = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/upload/documents')
+      const res = await axios.get('https://finzo-backend-1kdm.onrender.com/api/upload/documents')
       setDocuments(res.data)
     } catch (err) {
       console.error('Failed to fetch documents:', err)
@@ -73,7 +73,7 @@ export default function Documents() {
     }, 1500)
 
     try {
-      await axios.post('http://localhost:8000/api/upload/document', formData)
+      await axios.post('https://finzo-backend-1kdm.onrender.com/api/upload/document', formData)
       
       // Ensure animation completes
       setTimeout(() => {
@@ -101,7 +101,7 @@ export default function Documents() {
   const handleDelete = async (id) => {
     if (!confirm('Are you sure you want to delete this document?')) return
     try {
-      await axios.delete(`http://localhost:8000/api/upload/documents/${id}`)
+      await axios.delete(`https://finzo-backend-1kdm.onrender.com/api/upload/documents/${id}`)
       setDocuments(prev => prev.filter(doc => doc.id !== id))
     } catch (err) {
       console.error('Delete failed:', err)

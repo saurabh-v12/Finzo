@@ -6,7 +6,7 @@ import {
   Tooltip, ResponsiveContainer
 } from 'recharts'
 
-const API = 'http://localhost:8000'
+const API = 'https://finzo-backend-1kdm.onrender.com'
 
 export default function RiskScore() {
   const [summary, setSummary] = useState(null)

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import axios from 'axios'
 import { Sparkles, RefreshCw } from 'lucide-react'
 
-const API = 'http://localhost:8000'
+const API = 'https://finzo-backend-1kdm.onrender.com'
 
 const TYPE_STYLES = {
   OVERSPENDING: { bg: 'bg-red-500/10', border: 'border-red-500/30', badge: 'bg-red-500', text: 'text-red-400' },

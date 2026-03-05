@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import axios from 'axios'
 
-const API = 'http://localhost:8000'
+const API = 'https://finzo-backend-1kdm.onrender.com'
 
 const DEFAULT_BUDGETS = {
   Food: 6000,

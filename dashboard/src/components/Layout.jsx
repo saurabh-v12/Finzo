@@ -33,7 +33,7 @@ export default function Layout() {
 
   const handleLogout = () => {
     localStorage.removeItem('finzo_user')
-    window.location.href = 'http://localhost:5173/login'
+    window.location.href = 'https://finzo-landing.onrender.com/login'
   }
 
   return (

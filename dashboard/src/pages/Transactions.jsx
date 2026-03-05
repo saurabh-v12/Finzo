@@ -38,8 +38,8 @@ export default function Transactions() {
   const fetchData = async () => {
     try {
       const [txRes, summaryRes] = await Promise.all([
-        axios.get('http://localhost:8000/api/transactions?limit=500'),
-        axios.get('http://localhost:8000/api/transactions/summary')
+        axios.get('https://finzo-backend-1kdm.onrender.com/api/transactions?limit=500'),
+        axios.get('https://finzo-backend-1kdm.onrender.com/api/transactions/summary')
       ])
       setTransactions(txRes.data)
       setSummary(summaryRes.data)

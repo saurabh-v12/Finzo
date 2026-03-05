@@ -41,11 +41,11 @@ export default function Dashboard() {
       try {
         setLoading(true)
         const [summaryRes, categoriesRes, trendRes, txRes, insightsRes] = await Promise.all([
-          axios.get('http://localhost:8000/api/dashboard/summary'),
-          axios.get('http://localhost:8000/api/dashboard/categories'),
-          axios.get('http://localhost:8000/api/dashboard/monthly-trend'),
-          axios.get('http://localhost:8000/api/transactions?limit=5'),
-          axios.get('http://localhost:8000/api/insights')
+          axios.get('https://finzo-backend-1kdm.onrender.com/api/dashboard/summary'),
+          axios.get('https://finzo-backend-1kdm.onrender.com/api/dashboard/categories'),
+          axios.get('https://finzo-backend-1kdm.onrender.com/api/dashboard/monthly-trend'),
+          axios.get('https://finzo-backend-1kdm.onrender.com/api/transactions?limit=5'),
+          axios.get('https://finzo-backend-1kdm.onrender.com/api/insights')
         ])
         setData({
           summary: summaryRes.data,
