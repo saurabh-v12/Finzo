@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from backend.database import engine, Base
 from backend.routes import upload, transactions, insights, dashboard
 import os
@@ -28,26 +29,13 @@ app.include_router(transactions.router, prefix="/api")
 app.include_router(insights.router, prefix="/api/insights")
 app.include_router(dashboard.router, prefix="/api/dashboard")
 
+# Define frontend path
+frontend_path = os.path.join(os.path.dirname(__file__), '..', 'frontend')
+
 @app.get("/api/health")
 def read_root():
     return {"message": "Finzo API running", "version": "1.0"}
 
-
-app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
-
-
-# Additional frontend mount for explicit /app path
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-import os
-
-frontend_path = os.path.join(
-    os.path.dirname(__file__), '..', 'frontend'
-)
-
+# Mount frontend
 if os.path.exists(frontend_path):
-    app.mount(
-        "/app",
-        StaticFiles(directory=frontend_path, html=True),
-        name="frontend_app"
-    )
+    app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")

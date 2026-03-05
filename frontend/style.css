@@ -118,13 +118,18 @@ body {
 
 /* TOP BAR */
 .top-bar {
-  background: var(--bg-primary);
-  padding: 24px 32px 0;
-  border-bottom: none;
+  background: var(--bg-card);
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin: 16px 32px 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 16px;
+  z-index: 50;
 }
 
 .top-bar h1 {
@@ -628,18 +633,25 @@ body {
  .budget-status { font-size: 13px; font-weight: 500; } 
  
  /* AI Insights fix - no overlap */ 
- .insights-grid { 
-   padding: 0 32px; max-width: 900px; 
- } 
- .insight-card { 
-   background: #1e2235; 
-   border-radius: 16px; padding: 24px; 
-   margin-bottom: 16px; 
-   border: 1px solid rgba(255,255,255,0.08); 
-   box-sizing: border-box; 
-   overflow: hidden; display: block; 
-   width: 100%; 
- } 
+.insights-grid { 
+  padding: 0 32px; max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+} 
+.insight-card { 
+  background: #1e2235; 
+  border-radius: 16px; padding: 24px; 
+  border: 1px solid rgba(255,255,255,0.08); 
+  box-sizing: border-box; 
+  overflow: hidden; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%; 
+  min-height: 220px;
+  margin-bottom: 0 !important;
+} 
  .insight-card h3 { 
    color: #e2e8f0; font-size: 16px; 
    font-weight: 600; margin: 0 0 10px; 
@@ -688,6 +700,11 @@ body {
    display: flex; align-items: center; 
    gap: 8px; font-size: 13px; color: #94a3b8; 
  } 
+
+ .mini-stat-value {
+   font-weight: 600;
+   color: #ffffff;
+ }
  .dot { width: 8px; height: 8px; 
    border-radius: 50%; display: inline-block; } 
  .dot-green { background: #10b981; } 
@@ -716,8 +733,8 @@ body {
 
 /* Category Chart Fixes */
 #categoryChart {
-  width: 120px !important;
-  height: 120px !important;
+  width: 130px !important;
+  height: 130px !important;
 }
 
 .doc-type-section {
@@ -804,4 +821,29 @@ body {
 .docs-table td {
   color: #e2e8f0;
   padding: 14px 16px;
+}
+
+/* Month Tabs Styling */
+.month-tab {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.month-tab:hover {
+  background: rgba(255,255,255,0.1);
+  color: #e2e8f0;
+  border-color: rgba(255,255,255,0.2);
+}
+
+.month-tab.active {
+  background: #6366f1;
+  color: #ffffff;
+  border-color: #6366f1;
 }

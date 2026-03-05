@@ -157,7 +157,7 @@ function setFetchStatus(isFetching) {
 }
 
 // --- API HELPERS ---
-const API_BASE = 'https://finzo-1.onrender.com';
+const API_BASE = '';
 
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
@@ -208,6 +208,7 @@ const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-IN', {
         style: 'currency',
         currency: 'INR',
+        minimumFractionDigits: 2,
         maximumFractionDigits: 2
     }).format(amount);
 };
@@ -261,15 +262,21 @@ function updateDashboardCharts(categories, trends) {
         window.categoryChart.data.labels = categories.map(c => c.category);
         window.categoryChart.data.datasets[0].data = categories.map(c => c.percentage);
         window.categoryChart.update();
+    }
 
-        const legendContainer = document.getElementById('category-legend');
-        if (legendContainer && categories && categories.length > 0) {
-            const colors = ['#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6','#3b82f6','#ec4899','#64748b'];
+    // --- NEW LEGEND POPULATION LOGIC ---
+    const legendContainer = document.getElementById('category-legend');
+    if (legendContainer) {
+        const colors = ['#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6','#3b82f6','#ec4899','#64748b','#14b8a6','#f97316'];
+        
+        if (!categories || categories.length === 0) {
+            legendContainer.innerHTML = '<span style="font-size:12px;color:#64748b;">No data</span>';
+        } else {
             legendContainer.innerHTML = categories.slice(0,8).map((c,i) => `
-                <div style="display:flex;align-items:center;gap:6px;">
-                    <span style="width:8px;height:8px;border-radius:50%;background:${colors[i%colors.length]};flex-shrink:0;"></span>
-                    <span style="font-size:11px;color:#94a3b8;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.category}</span>
-                    <span style="font-size:11px;color:#e2e8f0;font-weight:600;">${c.percentage?c.percentage.toFixed(1):0}%</span>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                    <span style="width:9px;height:9px;border-radius:50%;background:${colors[i%colors.length]};flex-shrink:0;display:inline-block;"></span>
+                    <span style="font-size:12px;color:#94a3b8;flex:1;">${c.category || 'Other'}</span>
+                    <span style="font-size:12px;color:#e2e8f0;font-weight:600;">${c.percentage ? Number(c.percentage).toFixed(1) : 0}%</span>
                 </div>
             `).join('');
         }
@@ -390,16 +397,16 @@ async function initTransactionsPage() {
 
 async function loadTransactionSummary() {
     try {
-        const res = await fetch('https://finzo-1.onrender.com/api/transactions/summary');
-        const data = await res.json();
+        const data = await fetchAPI('/transactions/summary');
+        if (!data) throw new Error('Failed to fetch summary');
         
         const debitEl = document.getElementById('tx-total-debits');
         const creditEl = document.getElementById('tx-total-credits');
         const netEl = document.getElementById('tx-net-balance');
         
-        if (debitEl) debitEl.textContent = '₹' + Number(data.total_debit || 0).toLocaleString('en-IN');
-        if (creditEl) creditEl.textContent = '₹' + Number(data.total_credit || 0).toLocaleString('en-IN');
-        if (netEl) netEl.textContent = '₹' + Number(data.net_balance || 0).toLocaleString('en-IN');
+        if (debitEl) debitEl.textContent = formatCurrency(data.total_debit || 0);
+        if (creditEl) creditEl.textContent = formatCurrency(data.total_credit || 0);
+        if (netEl) netEl.textContent = formatCurrency(data.net_balance || 0);
         
         totalTransactionsCount = data.transaction_count || 0;
             
@@ -413,15 +420,14 @@ async function loadTransactions(page = 1) {
     const search = document.getElementById('tx-search-input')?.value || '';
     const category = document.getElementById('tx-category-filter')?.value || '';
     
-    let url = `https://finzo-1.onrender.com/api/transactions?limit=10&offset=${(page-1)*10}`;
-    if (search) url += `&search=${encodeURIComponent(search)}`;
-    if (category && category !== 'all') url += `&category=${encodeURIComponent(category)}`;
+    let endpoint = `/transactions?limit=10&offset=${(page-1)*10}`;
+    if (search) endpoint += `&search=${encodeURIComponent(search)}`;
+    if (category && category !== 'all') endpoint += `&category=${encodeURIComponent(category)}`;
     
     try {
-        const res = await fetch(url);
-        const data = await res.json();
+        const data = await fetchAPI(endpoint);
         // Handle array or object wrapper
-        const transactions = Array.isArray(data) ? data : (data.transactions || []);
+        const transactions = Array.isArray(data) ? data : (data?.transactions || []);
         
         const tbody = document.getElementById('transactions-table-body');
         if (!tbody) return;
@@ -458,11 +464,11 @@ async function loadTransactions(page = 1) {
             
             return `<tr>
                 <td>${date}</td>
-                <td><div style="font-weight: 500; color: #e2e8f0;">${tx.merchant || tx.description || '—'}</div></td>
+                <td><div style="font-weight: 500; color: #111827;">${tx.merchant || tx.description || 'â€”'}</div></td>
                 <td><span class="badge ${badgeClass}">${tx.category || 'Others'}</span></td>
-                <td><span class="badge-type">${tx.transaction_type || '—'}</span></td>
+                <td><span class="badge-type">${tx.transaction_type || 'â€”'}</span></td>
                 <td style="color:${isDebit ? '#ef4444' : '#10b981'};font-weight:600;">
-                    ${isDebit ? '-' : '+'}₹${amount}
+                    ${isDebit ? '-' : '+'}${formatCurrency(Math.abs(tx.amount))}
                 </td>
             </tr>`;
         }).join('');
@@ -523,6 +529,7 @@ function initCharts() {
         options: {
             animation: {
                 y: {
+                    from: 0,
                     duration: 2000,
                     easing: 'easeOutQuart'
                 }
@@ -541,7 +548,7 @@ function initCharts() {
                     displayColors: false,
                     callbacks: {
                         label: function(context) {
-                            return '₹' + context.parsed.y.toLocaleString('en-IN');
+                            return formatCurrency(context.parsed.y);
                         }
                     }
                 }
@@ -553,7 +560,7 @@ function initCharts() {
                     ticks: {
                         color: '#9ca3af',
                         font: { size: 11 },
-                        callback: function(value) { return '₹' + (value / 1000) + 'k'; }
+                        callback: function(value) { return '\u20B9' + (value / 1000) + 'k'; }
                     },
                     border: { display: false }
                 },
@@ -572,23 +579,30 @@ function initCharts() {
         const ctxDonut = ctxDonutEl.getContext('2d');
         window.categoryChart = new Chart(ctxDonut, {
             type: 'doughnut',
-            width: 120,
-            height: 120,
             data: {
                 labels: [],
                 datasets: [{
                     data: [],
-                    backgroundColor: ['#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6','#3b82f6','#ec4899','#64748b','#14b8a6','#f97316'],
+                    backgroundColor: [
+                        '#6366f1', // Indigo
+                        '#10b981', // Emerald
+                        '#f59e0b', // Amber
+                        '#ef4444', // Red
+                        '#8b5cf6', // Violet
+                        '#3b82f6', // Blue
+                        '#ec4899', // Pink
+                        '#64748b'  // Slate
+                    ],
                     borderWidth: 0,
                     hoverOffset: 4
                 }]
             },
             options: {
-                responsive: false,
+                responsive: true,
                 maintainAspectRatio: false,
-                cutout: '70%',
+                cutout: '75%',
                 plugins: {
-                    legend: { display: false },
+                    legend: { display: false }, // Hide legend for cleaner look in right panel
                     tooltip: {
                         backgroundColor: '#ffffff',
                         bodyColor: '#111827',
@@ -610,15 +624,12 @@ function initCharts() {
 async function loadSpendingAnalysis() {
     try {
         // 1. Fetch Data
-        const summaryRes = await fetch('https://finzo-1.onrender.com/api/dashboard/summary');
-        const summary = await summaryRes.json();
+        const summary = await fetchAPI('/dashboard/summary');
         
-        const catRes = await fetch('https://finzo-1.onrender.com/api/dashboard/categories');
-        const categories = await catRes.json();
+        const categories = await fetchAPI('/dashboard/categories');
         
-        const txRes = await fetch('https://finzo-1.onrender.com/api/transactions?limit=500');
-        const txData = await txRes.json();
-        const transactions = txData.transactions || txData || [];
+        const txData = await fetchAPI('/transactions?limit=500');
+        const transactions = txData?.transactions || txData || [];
 
         // 2. Update Stats
         // Total Spent
@@ -637,9 +648,9 @@ async function loadSpendingAnalysis() {
         // Yes, let me check the `read` output from previous turn.
         // Lines 441-464 of index.html show the stats grid in #analysis.
         // They don't have IDs.
-        // <div class="stat-value">₹42,850</div>
-        // <div class="stat-value" data-stat="avg-daily">₹1,530</div>
-        // <div class="stat-value">₹8,500</div>
+        // <div class="stat-value">â‚¹42,850</div>
+        // <div class="stat-value" data-stat="avg-daily">â‚¹1,530</div>
+        // <div class="stat-value">â‚¹8,500</div>
         
         // I should add IDs or data-attributes to these elements in HTML first to be safe, 
         // or use complex selectors like `#analysis .stat-card:nth-child(1) .stat-value`.
@@ -691,7 +702,7 @@ async function loadSpendingAnalysis() {
             .slice(0, 6); // Top 6
             
         // Rebuild Table
-        const merchantTableBody = document.querySelector('#analysis .simple-table tbody');
+        const merchantTableBody = document.getElementById('merchantsTableBody');
         if (merchantTableBody) {
             merchantTableBody.innerHTML = topMerchants.map(m => {
                 const pct = totalSpent > 0 ? Math.round((m.amount / totalSpent) * 100) : 0;
@@ -775,7 +786,7 @@ function initAnalysisCharts() {
                     bodyColor: '#94a3b8',
                     callbacks: {
                         label: function(context) {
-                            return '₹' + context.parsed.x.toLocaleString('en-IN');
+                            return formatCurrency(context.parsed.x);
                         }
                     }
                 }
@@ -811,7 +822,7 @@ function initAnalysisCharts() {
                         ctx.font = '11px Inter';
                         ctx.textAlign = 'left';
                         ctx.textBaseline = 'middle';
-                        ctx.fillText('₹' + value.toLocaleString('en-IN'), bar.x + 5, bar.y);
+                        ctx.fillText(formatCurrency(value), bar.x + 5, bar.y);
                     });
                 });
             }
@@ -841,7 +852,7 @@ function initAnalysisCharts() {
                     bodyColor: '#94a3b8',
                     callbacks: {
                         label: function(context) {
-                            return '₹' + context.parsed.y.toLocaleString('en-IN');
+                            return formatCurrency(context.parsed.y);
                         }
                     }
                 }
@@ -869,7 +880,7 @@ function initAnalysisCharts() {
                         ctx.font = '11px Inter';
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'bottom';
-                        ctx.fillText('₹' + value.toLocaleString('en-IN'), bar.x, bar.y - 5);
+                        ctx.fillText(formatCurrency(value), bar.x, bar.y - 5);
                     });
                 });
             }
@@ -954,12 +965,12 @@ async function loadDocuments() {
             <td>
                 <div class="doc-name" style="display: flex; align-items: center; gap: 8px; font-weight: 500;">
                     <i class="fa-regular fa-file-pdf text-danger"></i>
-                    <span style="color: #e2e8f0;">${doc.original_filename || doc.filename}</span>
+                    <span style="color: #ffffff;">${doc.original_filename || doc.filename}</span>
                 </div>
             </td>
             <td><span class="badge badge-others">${doc.document_type || 'General'}</span></td>
-            <td style="color: #94a3b8; font-size: 0.9rem;">${formatDate(doc.upload_time)}</td>
-            <td style="font-weight: 600; color: #e2e8f0;">${doc.transaction_count || 0}</td>
+            <td style="color: #6b7280; font-size: 0.9rem;">${formatDate(doc.upload_time)}</td>
+            <td style="font-weight: 600; color: #374151;">${doc.transaction_count || 0}</td>
             <td>${statusBadge}</td>
             <td>
                 <button onclick="deleteDocument(${doc.id})" style="border:none; background:none; cursor:pointer; color: #ef4444; font-size: 1rem; padding: 4px;">
@@ -974,11 +985,11 @@ async function loadDocuments() {
 async function deleteDocument(docId) {
     if (confirm("Delete this document and all its transactions? This cannot be undone.")) {
         try {
-            const response = await fetch(`https://finzo-1.onrender.com/api/upload/documents/${docId}`, {
+            const result = await fetchAPI(`/upload/documents/${docId}`, {
                 method: 'DELETE'
             });
             
-            if (response.ok) {
+            if (result) {
                 showToast("Document deleted");
                 loadDocuments(); // Reload table
                 loadDashboardData(); // Refresh stats
@@ -1023,12 +1034,12 @@ async function handleFileUpload(file) {
     // Re-render steps list to match requirements
     const stepsList = document.querySelector('.processing-steps');
     stepsList.innerHTML = `
-        <li class="step" id="step-1" style="display:none;"><span class="step-icon"><i class="fa-solid fa-circle-notch fa-spin" style="color:#6366f1;"></i></span><span class="step-text">Uploading file...</span></li>
-        <li class="step" id="step-2" style="display:none;"><span class="step-icon"><i class="fa-solid fa-circle-notch fa-spin" style="color:#6366f1;"></i></span><span class="step-text">Extracting text from document...</span></li>
-        <li class="step" id="step-3" style="display:none;"><span class="step-icon"><i class="fa-solid fa-circle-notch fa-spin" style="color:#6366f1;"></i></span><span class="step-text">Sending to AI for analysis...</span></li>
-        <li class="step" id="step-4" style="display:none;"><span class="step-icon"><i class="fa-solid fa-circle-notch fa-spin" style="color:#6366f1;"></i></span><span class="step-text">Structuring transactions...</span></li>
-        <li class="step" id="step-5" style="display:none;"><span class="step-icon"><i class="fa-solid fa-circle-notch fa-spin" style="color:#6366f1;"></i></span><span class="step-text">Categorizing entries...</span></li>
-        <li class="step" id="step-6" style="display:none;"><span class="step-icon"><i class="fa-solid fa-circle-notch fa-spin" style="color:#6366f1;"></i></span><span class="step-text">Detecting patterns...</span></li>
+        <li class="step hidden" id="step-1"><span class="step-icon"><i class="fa-solid fa-circle-notch fa-spin"></i></span><span class="step-text">Uploading file...</span></li>
+        <li class="step hidden" id="step-2"><span class="step-icon"><i class="fa-solid fa-circle-notch fa-spin"></i></span><span class="step-text">Extracting text from document...</span></li>
+        <li class="step hidden" id="step-3"><span class="step-icon"><i class="fa-solid fa-circle-notch fa-spin"></i></span><span class="step-text">Sending to AI for analysis...</span></li>
+        <li class="step hidden" id="step-4"><span class="step-icon"><i class="fa-solid fa-circle-notch fa-spin"></i></span><span class="step-text">Structuring transactions...</span></li>
+        <li class="step hidden" id="step-5"><span class="step-icon"><i class="fa-solid fa-circle-notch fa-spin"></i></span><span class="step-text">Categorizing entries...</span></li>
+        <li class="step hidden" id="step-6"><span class="step-icon"><i class="fa-solid fa-circle-notch fa-spin"></i></span><span class="step-text">Detecting patterns...</span></li>
     `;
 
     // 4. Prepare Data
@@ -1045,21 +1056,17 @@ async function handleFileUpload(file) {
         // Show first step
         const activateStep = (id) => {
             const el = document.getElementById(`step-${id}`);
-            if (el) {
-                el.style.display = 'flex';
-                el.style.alignItems = 'center';
-                el.style.gap = '10px';
-                el.style.padding = '6px 0';
-                el.style.color = '#818cf8';
+            if(el) {
+                el.classList.remove('hidden');
+                el.classList.add('active');
             }
         };
-
         const completeStep = (id) => {
             const el = document.getElementById(`step-${id}`);
-            if (el) {
-                el.style.color = '#10b981';
-                const icon = el.querySelector('.step-icon');
-                if (icon) icon.innerHTML = '<i class="fa-solid fa-check" style="color:#10b981;"></i>';
+            if(el) {
+                el.classList.remove('active');
+                el.classList.add('completed');
+                el.querySelector('.step-icon').innerHTML = '<i class="fa-solid fa-check" style="color: #10b981;"></i>';
             }
         };
 
@@ -1076,17 +1083,16 @@ async function handleFileUpload(file) {
             }
         }, 1000);
 
-        const response = await fetch('https://finzo-1.onrender.com/api/upload/document', {
+        const result = await fetchAPI('/upload/document', {
             method: 'POST',
             body: formData
         });
 
-        if (!response.ok) {
+        if (!result) {
             clearInterval(progressInterval);
-            throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
+            throw new Error('Upload failed');
         }
 
-        const result = await response.json();
         console.log('Upload initiated:', result);
         
         completeStep(1); // Upload done
@@ -1096,12 +1102,12 @@ async function handleFileUpload(file) {
         const stepInterval = setInterval(() => {
             if (currentStep > 6) {
                 clearInterval(stepInterval);
-                return;
+            } else {
+                if (currentStep > 2) completeStep(currentStep - 1);
+                activateStep(currentStep);
+                currentStep++;
             }
-            if (currentStep > 2) completeStep(currentStep - 1);
-            activateStep(currentStep);
-            currentStep++;
-        }, 1800);
+        }, 1500);
 
         // Check if we need to poll
         if (result.id && result.status !== 'done') {
@@ -1133,8 +1139,7 @@ async function pollDocumentStatus(documentId, progressBar, successBanner, progre
         }
         
         try {
-            const res = await fetch(`https://finzo-1.onrender.com/api/upload/documents/${documentId}`);
-            const doc = await res.json();
+            const doc = await fetchAPI(`/upload/documents/${documentId}`);
             
             console.log('Polling status:', doc.status);
 
@@ -1154,7 +1159,7 @@ async function pollDocumentStatus(documentId, progressBar, successBanner, progre
                 return;
             }
             
-            // Still processing — check again in 3 seconds
+            // Still processing â€” check again in 3 seconds
             retries++;
             setTimeout(poll, 3000);
             
@@ -1202,8 +1207,7 @@ let recurringItems = [];
 async function loadRecurring() {
     try {
         // 1. Fetch Transactions (using limit 500)
-        const txRes = await fetch('https://finzo-1.onrender.com/api/transactions?limit=500');
-        const txData = await txRes.json();
+        const txData = await fetchAPI('/transactions?limit=500');
         const transactions = txData.transactions || txData || [];
         
         // 2. Filter for Recurring
@@ -1299,7 +1303,7 @@ function renderRecurringList() {
             </div>
             <div class="rec-info">
                 <h4>${item.merchant}</h4>
-                <p>${item.category} • ${item.frequency}</p>
+                <p>${item.category} â€¢ ${item.frequency}</p>
             </div>
             <div class="rec-details">
                 <div class="rec-amount">${formatCurrency(item.amount)}</div>
@@ -1487,7 +1491,7 @@ function renderUpcomingList(items) {
                 </div>
                 <div>
                     <h4 style="margin: 0; font-weight: bold;">${item.merchant}</h4>
-                    <div style="font-size: 0.875rem; color: #94a3b8;">${item.category} • ${item.frequency}</div>
+                    <div style="font-size: 0.875rem; color: #94a3b8;">${item.category} â€¢ ${item.frequency}</div>
                 </div>
             </div>
             <div style="text-align: right;">
@@ -1590,7 +1594,7 @@ function updateUpcomingAlert(items) {
         
         const content = alertBanner.querySelector('.alert-content span');
         if (content) {
-            content.innerHTML = `<strong>${count} payment${count > 1 ? 's' : ''} overdue</strong> — Total ${formatCurrency(total)}`;
+            content.innerHTML = `<strong>${count} payment${count > 1 ? 's' : ''} overdue</strong> â€” Total ${formatCurrency(total)}`;
         }
         
         // Setup dismiss
@@ -1626,8 +1630,7 @@ const defaultBudgets = {
 async function loadBudget() {
     try {
         // 1. Fetch Categories
-        const catRes = await fetch('https://finzo-1.onrender.com/api/dashboard/categories');
-        const categories = await catRes.json();
+        const categories = await fetchAPI('/dashboard/categories');
         
         // 2. Get User Budgets from LocalStorage
         const savedBudgets = JSON.parse(localStorage.getItem('userBudgets')) || {};
@@ -1696,7 +1699,7 @@ function renderBudgetCards(categories, budgets) {
 
 function getCategoryEmoji(category) {
     const map = {
-        'Food': '🍔', 'Housing': '🏠', 'Transport': '🚗', 'Shopping': '🛍️',
+        'Food': '😊', 'Housing': '🏠', 'Transport': '🛻', 'Shopping': '🛍️',
         'Investment': '📈', 'Health': '💊', 'Entertainment': '🎬', 'Utilities': '💡',
         'Education': '🎓', 'Others': '📦', 'Income': '💰'
     };
@@ -1742,6 +1745,7 @@ function updateBudgetSummary(categories, budgets) {
     
     const ringValue = document.querySelector('.ring-value');
     if (ringValue) ringValue.textContent = `${healthScore}%`;
+    if (ringValue) ringValue.style.color = '#ffffff';
 
     // Update Mini Stats
     const miniStats = document.querySelectorAll('.mini-stat-value');
@@ -1886,7 +1890,7 @@ async function updateInsightsSummary() {
         const footer = document.querySelector('.ai-summary-footer');
         if (footer) {
             const now = new Date();
-            footer.textContent = `Generated by Gemini AI · ${now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}, ${now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}`;
+            footer.textContent = `Generated by Gemini AI Â· ${now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}, ${now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}`;
         }
 
     } catch (error) {
