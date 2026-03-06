@@ -5,7 +5,12 @@ from fastapi.responses import FileResponse
 from backend.database import engine, Base
 from backend.routes import upload, transactions, insights, dashboard
 import os
-
+@app.delete("/api/admin/reset-db")
+def reset_database():
+    from backend.database import engine, Base
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    return {"message": "Database reset successfully"}
 # Create Database Tables
 Base.metadata.create_all(bind=engine)
 
